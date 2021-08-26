@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Console\Commands;
+namespace QurirQ\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;

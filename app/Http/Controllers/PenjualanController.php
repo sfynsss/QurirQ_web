@@ -1,15 +1,15 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\MstJual;
-use Larisso\DetJual;
-use Larisso\VwMstJual;
-use Larisso\MstOrderJual;
-use Larisso\DetOrderJual;
-use Larisso\Barang;
-use Larisso\Customer;
+use QurirQ\MstJual;
+use QurirQ\DetJual;
+use QurirQ\VwMstJual;
+use QurirQ\MstOrderJual;
+use QurirQ\DetOrderJual;
+use QurirQ\Barang;
+use QurirQ\Customer;
 use Session;
 use Redirect;
 use Carbon\Carbon;

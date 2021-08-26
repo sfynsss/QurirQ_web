@@ -1,15 +1,15 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Larisso\DetVoucher;
-use Larisso\Customer;
-use Larisso\Voucher;
-use Larisso\SettingPoint;
-use Larisso\SettingVoucher;
+use QurirQ\DetVoucher;
+use QurirQ\Customer;
+use QurirQ\Voucher;
+use QurirQ\SettingPoint;
+use QurirQ\SettingVoucher;
 use Illuminate\Support\Str;
 
 class VoucherController extends Controller

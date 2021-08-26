@@ -1,18 +1,18 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Larisso\Mail\SendMailable;
+use QurirQ\Mail\SendMailable;
 use Session;
 use Redirect;
-use Larisso\Customer;
-use Larisso\Voucher;
-use Larisso\Barang;
-use Larisso\KategoriAndroid;
-use Larisso\MstJual;
-use Larisso\outlet;
+use QurirQ\Customer;
+use QurirQ\Voucher;
+use QurirQ\Barang;
+use QurirQ\KategoriAndroid;
+use QurirQ\MstJual;
+use QurirQ\outlet;
 
 class HomeController extends Controller
 {

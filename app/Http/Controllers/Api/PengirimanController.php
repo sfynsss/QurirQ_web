@@ -1,11 +1,11 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Steevenz\Rajaongkir;
-use Larisso\OngkirCod;
+use QurirQ\OngkirCod;
 
 class PengirimanController extends Controller
 {

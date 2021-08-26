@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Http\Middleware;
+namespace QurirQ\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 

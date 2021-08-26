@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Larisso\User::class,
+            'model' => QurirQ\User::class,
         ],
 
         // 'users' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Http;
+namespace QurirQ\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -14,10 +14,10 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Larisso\Http\Middleware\TrustProxies::class,
-        \Larisso\Http\Middleware\CheckForMaintenanceMode::class,
+        \QurirQ\Http\Middleware\TrustProxies::class,
+        \QurirQ\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \Larisso\Http\Middleware\TrimStrings::class,
+        \QurirQ\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
@@ -28,12 +28,12 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \Larisso\Http\Middleware\EncryptCookies::class,
+            \QurirQ\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Larisso\Http\Middleware\VerifyCsrfToken::class,
+            \QurirQ\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -51,12 +51,12 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Larisso\Http\Middleware\Authenticate::class,
+        'auth' => \QurirQ\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \Larisso\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \QurirQ\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
@@ -72,7 +72,7 @@ class Kernel extends HttpKernel
     protected $middlewarePriority = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Larisso\Http\Middleware\Authenticate::class,
+        \QurirQ\Http\Middleware\Authenticate::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,

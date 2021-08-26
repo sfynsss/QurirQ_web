@@ -1,10 +1,10 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\Kunjungan;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\Kunjungan;
 
 class KunjunganController extends Controller
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Larisso\MstJual;
+use QurirQ\MstJual;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 use FCM;
-use Larisso\User;
-use Larisso\Customer;
-use Larisso\Notif;
-use Larisso\DetNotif;
+use QurirQ\User;
+use QurirQ\Customer;
+use QurirQ\Notif;
+use QurirQ\DetNotif;
 
 class PembayaranController extends Controller
 {

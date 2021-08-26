@@ -1,15 +1,15 @@
 <?php
 
-namespace Larisso\Observers;
+namespace QurirQ\Observers;
 
-use Larisso\User;
+use QurirQ\User;
 
 class UserObserver
 {
     /**
      * Handle the User "creating" event.
      *
-     * @param  \Larisso\User  $user
+     * @param  \QurirQ\User  $user
      * @return void
      */
     public function creating(User $user)

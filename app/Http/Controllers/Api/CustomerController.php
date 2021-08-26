@@ -1,13 +1,13 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Larisso\Customer;
-use Larisso\KategoriCustomer;
-use Larisso\User;
+use QurirQ\Customer;
+use QurirQ\KategoriCustomer;
+use QurirQ\User;
 
 class CustomerController extends Controller
 {

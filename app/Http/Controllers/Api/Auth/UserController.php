@@ -1,15 +1,15 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api\Auth;
+namespace QurirQ\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Larisso\Mail\EmailActivation;
-use Larisso\Mail\ForgetPassword;
-use Larisso\User;
-use Larisso\Alamat;
-use Larisso\Update;
+use QurirQ\Mail\EmailActivation;
+use QurirQ\Mail\ForgetPassword;
+use QurirQ\User;
+use QurirQ\Alamat;
+use QurirQ\Update;
 use DB;
 
 class UserController extends Controller

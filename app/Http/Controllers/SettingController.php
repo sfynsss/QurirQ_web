@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 

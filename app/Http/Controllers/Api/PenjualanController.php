@@ -1,18 +1,18 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\Cart;
-use Larisso\Wishlist;
-use Larisso\MstJual;
-use Larisso\DetJual;
-use Larisso\Customer;
-use Larisso\VwMstJual;
-use Larisso\MstOrderJual;
-use Larisso\DetOrderJual;
-use Larisso\Voucher;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\Cart;
+use QurirQ\Wishlist;
+use QurirQ\MstJual;
+use QurirQ\DetJual;
+use QurirQ\Customer;
+use QurirQ\VwMstJual;
+use QurirQ\MstOrderJual;
+use QurirQ\DetOrderJual;
+use QurirQ\Voucher;
 use Illuminate\Support\Facades\Auth;
 use DB;
 

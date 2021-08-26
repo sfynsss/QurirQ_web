@@ -1,10 +1,10 @@
 <?php
 
-namespace Larisso\Http\Controllers\Auth;
+namespace QurirQ\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\User;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\User;
 
 class ActivationController extends Controller
 {

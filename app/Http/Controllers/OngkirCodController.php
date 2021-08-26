@@ -1,9 +1,9 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\OngkirCod;
+use QurirQ\OngkirCod;
 use Redirect;
 use Session;
 

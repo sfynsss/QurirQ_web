@@ -1,11 +1,11 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api\Auth;
+namespace QurirQ\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Larisso\User;
+use QurirQ\User;
 
 class LoginController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Exceptions;
+namespace QurirQ\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

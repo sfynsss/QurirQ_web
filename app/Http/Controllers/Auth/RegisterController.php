@@ -1,9 +1,9 @@
 <?php
 
-namespace Larisso\Http\Controllers\Auth;
+namespace QurirQ\Http\Controllers\Auth;
 
-use Larisso\User;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\User;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -60,7 +60,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \Larisso\User
+     * @return \QurirQ\User
      */
     protected function create(array $data)
     {

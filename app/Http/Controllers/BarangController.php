@@ -1,14 +1,14 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Larisso\Imports\ImportBarang;
+use QurirQ\Imports\ImportBarang;
 use Illuminate\Http\Request;
-use Larisso\KategoriAndroid;
-use Larisso\Barang;
-use Larisso\Outlet;
-use Larisso\User;
+use QurirQ\KategoriAndroid;
+use QurirQ\Barang;
+use QurirQ\Outlet;
+use QurirQ\User;
 use Excel;
 
 class BarangController extends Controller

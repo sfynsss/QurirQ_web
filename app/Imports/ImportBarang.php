@@ -1,8 +1,8 @@
 <?php
 
-namespace Larisso\Imports;
+namespace QurirQ\Imports;
 
-use Larisso\Barang;
+use QurirQ\Barang;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 

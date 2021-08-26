@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso;
+namespace QurirQ;
 
 use Illuminate\Database\Eloquent\Model;
 

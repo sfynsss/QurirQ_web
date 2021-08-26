@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Mail;
+namespace QurirQ\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

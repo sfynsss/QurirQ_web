@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    Larisso\Http\Kernel::class
+    QurirQ\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    Larisso\Console\Kernel::class
+    QurirQ\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    Larisso\Exceptions\Handler::class
+    QurirQ\Exceptions\Handler::class
 );
 
 /*

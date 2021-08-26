@@ -1,8 +1,8 @@
 <?php
 
-namespace Larisso\Http\Controllers\Auth;
+namespace QurirQ\Http\Controllers\Auth;
 
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Larisso\KategoriAndroid;
-use Larisso\Promo;
-use Larisso\Barang;
-use Larisso\Outlet;
+use QurirQ\KategoriAndroid;
+use QurirQ\Promo;
+use QurirQ\Barang;
+use QurirQ\Outlet;
 use Redirect;
 use Session;
 

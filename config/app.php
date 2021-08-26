@@ -170,11 +170,11 @@ return [
         /*
          * Application Service Providers...
          */
-        Larisso\Providers\AppServiceProvider::class,
-        Larisso\Providers\AuthServiceProvider::class,
-        // Larisso\Providers\BroadcastServiceProvider::class,
-        Larisso\Providers\EventServiceProvider::class,
-        Larisso\Providers\RouteServiceProvider::class,
+        QurirQ\Providers\AppServiceProvider::class,
+        QurirQ\Providers\AuthServiceProvider::class,
+        // QurirQ\Providers\BroadcastServiceProvider::class,
+        QurirQ\Providers\EventServiceProvider::class,
+        QurirQ\Providers\RouteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         // Yajra\DataTables\DataTablesServiceProvider::class,

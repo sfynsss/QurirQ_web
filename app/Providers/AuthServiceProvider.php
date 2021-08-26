@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Providers;
+namespace QurirQ\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'Larisso\Model' => 'Larisso\Policies\ModelPolicy',
+        // 'QurirQ\Model' => 'QurirQ\Policies\ModelPolicy',
     ];
 
     /**

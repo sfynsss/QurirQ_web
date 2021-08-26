@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Providers;
+namespace QurirQ\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;

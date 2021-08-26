@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Http\Middleware;
+namespace QurirQ\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 

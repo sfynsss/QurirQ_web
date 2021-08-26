@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso\Providers;
+namespace QurirQ\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;

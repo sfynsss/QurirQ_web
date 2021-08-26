@@ -1,15 +1,15 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\SettingVoucher;
-use Larisso\SettingPoint;
-use Larisso\Voucher;
-use Larisso\MstVoucher;
-use Larisso\DetVoucher;
-use Larisso\TukarVoucher;
-use Larisso\User;
+use QurirQ\SettingVoucher;
+use QurirQ\SettingPoint;
+use QurirQ\Voucher;
+use QurirQ\MstVoucher;
+use QurirQ\DetVoucher;
+use QurirQ\TukarVoucher;
+use QurirQ\User;
 use Session;
 use Redirect;
 use store;

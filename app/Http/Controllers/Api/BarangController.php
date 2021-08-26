@@ -1,11 +1,11 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\KategoriAndroid;
-use Larisso\Barang;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\KategoriAndroid;
+use QurirQ\Barang;
 
 class BarangController extends Controller
 {

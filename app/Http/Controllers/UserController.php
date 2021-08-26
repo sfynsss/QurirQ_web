@@ -1,10 +1,10 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\User;
-use Larisso\Outlet;
+use QurirQ\User;
+use QurirQ\Outlet;
 use Session;
 use Redirect;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Larisso;
+namespace QurirQ;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +13,6 @@ class Barang extends Model
     protected $fillable = ['kd_brg','kd_kat_android'];
 
     function kategori(){
-    	return $this->belongsTo('Larisso\KategoriAndroid');
+    	return $this->belongsTo('QurirQ\KategoriAndroid');
     }
 }

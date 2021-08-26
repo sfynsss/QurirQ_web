@@ -1,13 +1,13 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api\Auth;
+namespace QurirQ\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
+use QurirQ\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Larisso\Mail\EmailActivation;
-use Larisso\User;
-use Larisso\Customer;
+use QurirQ\Mail\EmailActivation;
+use QurirQ\User;
+use QurirQ\Customer;
 use Validator;
 
 class RegisterController extends Controller

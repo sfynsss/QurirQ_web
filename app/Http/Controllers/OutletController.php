@@ -1,11 +1,11 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\Outlet;
-use Larisso\KategoriOutlet;
-use Larisso\KategoriAndroid;
+use QurirQ\Outlet;
+use QurirQ\KategoriOutlet;
+use QurirQ\KategoriAndroid;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

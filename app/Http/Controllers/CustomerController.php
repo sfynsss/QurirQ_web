@@ -1,19 +1,19 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Larisso\Customer;
-use Larisso\DetCustomer;
-use Larisso\vw_laba_kotor;
-use Larisso\Wilayah;
-use Larisso\User;
-use Larisso\SettingVoucher;
-use Larisso\Voucher;
-use Larisso\Outlet;
-use Larisso\RecordPointEdit;
+use QurirQ\Customer;
+use QurirQ\DetCustomer;
+use QurirQ\vw_laba_kotor;
+use QurirQ\Wilayah;
+use QurirQ\User;
+use QurirQ\SettingVoucher;
+use QurirQ\Voucher;
+use QurirQ\Outlet;
+use QurirQ\RecordPointEdit;
 use Carbon\Carbon;
 use Validator;
 use Session;

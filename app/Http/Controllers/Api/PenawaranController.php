@@ -1,11 +1,11 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\Penawaran;
-use Larisso\GambarPromo;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\Penawaran;
+use QurirQ\GambarPromo;
 
 class PenawaranController extends Controller
 {

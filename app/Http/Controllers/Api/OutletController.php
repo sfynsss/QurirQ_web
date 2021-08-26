@@ -1,10 +1,10 @@
 <?php
 
-namespace Larisso\Http\Controllers\Api;
+namespace QurirQ\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Larisso\Http\Controllers\Controller;
-use Larisso\Outlet;
+use QurirQ\Http\Controllers\Controller;
+use QurirQ\Outlet;
 
 class OutletController extends Controller
 {

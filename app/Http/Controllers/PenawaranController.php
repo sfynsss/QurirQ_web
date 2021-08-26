@@ -1,10 +1,10 @@
 <?php
 
-namespace Larisso\Http\Controllers;
+namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Larisso\Penawaran;
-use Larisso\GambarPromo;
+use QurirQ\Penawaran;
+use QurirQ\GambarPromo;
 use Redirect;
 use Session;
 
