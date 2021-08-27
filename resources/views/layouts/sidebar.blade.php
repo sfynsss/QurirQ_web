@@ -1,9 +1,9 @@
 <!-- sidebar menu -->
-<div class="nk-sidebar nk-sidebar-fixed is-dark " data-content="sidebarMenu">
-    <div class="nk-sidebar-element nk-sidebar-head">
+<div class="nk-sidebar nk-sidebar-fixed is-dark" data-content="sidebarMenu">
+    <div class="nk-sidebar-element nk-sidebar-head" style="background-color:#00874D;">
         <div class="nk-sidebar-brand">
             <a href="{{url('/')}}" class="logo-link nk-sidebar-logo">
-                <img class="logo-light logo-img" src="{{url('images/LarissoApps.png')}}" srcset="./images/logo2x.png 2x" alt="logo">
+                <img class="logo-light logo-img" src="{{url('assets/login/images/icons/logo_panjang.png')}}" srcset="./images/logo2x.png 2x" alt="logo">
                 {{-- <img class="logo-dark logo-img" src="{{url('images/logo-dark.png')}}" srcset="./images/logo-dark2x.png 2x" alt="logo-dark">
                 <span class="nio-version">General</span> --}}
             </a>
@@ -21,13 +21,21 @@
                     </li>
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-list"></em></span>
+                            <span class="nk-menu-text">Kategori Outlet</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="{{ route('kategori_outlet') }}" class="nk-menu-link"><span class="nk-menu-text">Kategori Outlet</span></a>
+                            </li>
+                        </ul><!-- .nk-menu-sub -->
+                    </li><!-- .nk-menu-item --><!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-elementor"></em></span>
                             <span class="nk-menu-text">Barang</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="{{url('kategori_barang')}}" class="nk-menu-link"><span class="nk-menu-text">Kategori</span></a>
-                            </li>
                             <li class="nk-menu-item">
                                 <a href="{{url('barang')}}" class="nk-menu-link"><span class="nk-menu-text">Barang</span></a>
                             </li>

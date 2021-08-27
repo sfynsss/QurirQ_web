@@ -48,6 +48,20 @@ Route::post('auth/gantiPassword', 'Auth\ActivationController@ganti');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/downloadData', 'HomeController@downloadData');
 
+//outlet
+Route::get('kategori_outlet', 'OutletController@kategori_outlet')->name('kategori_outlet');
+Route::post('simpan_kategori_outlet', 'OutletController@simpan_kategori_outlet')->name('simpan_kategori_outlet');
+Route::post('ubah_kategori_outlet', 'OutletController@ubah_kategori_outlet')->name('ubah_kategori_outlet');
+Route::get('/data_outlet/{i}', 'OutletController@data_outlet')->name('data_outlet');
+// Route::get('/outlet', 'OutletController@index');
+Route::post('/simpan_outlet', 'OutletController@simpan_outlet')->name('simpan_outlet');
+Route::post('/ubah_outlet', 'OutletController@ubah_outlet')->name('ubah_outlet');
+Route::get('/hapus_outlet/{id}', 'OutletController@hapus_outlet')->name('hapus_outlet');
+
+Route::get('/detailOutlet/{id}', 'OutletController@detailOutlet');
+Route::post('/tambahKategoriOutlet', 'OutletController@tambahKategoriOutlet');
+Route::get('/deleteKategoriOutlet/{id}', 'OutletController@deleteKategoriOutlet');
+
 //Barang
 Route::get('barang', 'BarangController@barang');
 Route::get('barang/json', 'BarangController@datajson');
@@ -155,16 +169,6 @@ Route::get('/editOngkirCod/{id}', 'OngkirCodController@editOngkirCod');
 Route::post('/updateOngkirCod', 'OngkirCodController@updateOngkirCod');
 Route::get('/deleteOngkirCod/{id}', 'OngkirCodController@deleteOngkirCod');
 
-
-//outlet
-Route::get('/outlet', 'OutletController@index');
-Route::post('/tambahOutlet', 'OutletController@tambahOutlet');
-Route::post('/ubahOutlet', 'OutletController@ubahOutlet');
-Route::get('/deleteOutlet/{id}', 'OutletController@deleteOutlet');
-
-Route::get('/detailOutlet/{id}', 'OutletController@detailOutlet');
-Route::post('/tambahKategoriOutlet', 'OutletController@tambahKategoriOutlet');
-Route::get('/deleteKategoriOutlet/{id}', 'OutletController@deleteKategoriOutlet');
 
 //pembayaran
 Route::post('/getStatusPembayaran', 'PembayaranController@get_transaction_status');

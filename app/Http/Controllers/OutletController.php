@@ -2,6 +2,7 @@
 
 namespace QurirQ\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use QurirQ\Outlet;
 use QurirQ\KategoriOutlet;
@@ -14,13 +15,95 @@ use Redirect;
 
 class OutletController extends Controller
 {
-	public function index(){
-		$data = Outlet::all();
+	public function kategori_outlet()
+	{
+		$data = KategoriOutlet::all();
 
-		return view('outlet.index', compact('data'));
+		return view('outlet.kategori', compact('data'));
 	}
 
-	public function tambahOutlet(Request $request)
+	public function simpan_kategori_outlet(Request $request)
+	{
+		if ($request->gambar != "") {
+			$path = $request->file('gambar')->store(
+				'kategori_outlet', 'public'
+			);
+
+			if ($path) {
+				$insert = KategoriOutlet::insert([
+					"nm_kategori_outlet"	=> $request->nm_kategori,
+					"gbr_kategori_outlet"	=> $path,
+					"sts_tampil"			=> $request->status
+				]);
+
+				if ($insert) {
+					return back()->with('success','Data Kategori Berhasil Disimpan');
+				} else {
+					return back()->with('error','Data Kategori Gagal Disimpan');
+				}
+			} else {
+				return back()->with('error','Harap Periksa Kembali file inputan Anda !!!');
+			}
+		} else {
+			$insert = KategoriOutlet::insert([
+				"nm_kategori_outlet"	=> $request->nm_kategori,
+				"gbr_kategori_outlet"	=> "",
+				"sts_tampil"			=> $request->status
+			]);
+		}
+
+		if ($insert) {
+			return back()->with('success','Data Kategori Berhasil Disimpan');
+		} else {
+			return back()->with('error','Data Kategori Gagal Disimpan');
+		}
+	}
+
+	public function ubah_kategori_outlet(Request $request)
+	{
+		if ($request->gambar != "") {
+			$path = $request->file('gambar')->store(
+				'kategori_outlet', 'public'
+			);
+
+			if ($path) {
+				$insert = KategoriOutlet::where('id', $request->id_kategori)->update([
+					"nm_kategori_outlet"	=> $request->nm_kategori,
+					"gbr_kategori_outlet"	=> $path,
+					"sts_tampil"			=> $request->status
+				]);
+
+				if ($insert) {
+					return back()->with('success','Data Kategori Berhasil Diubah');
+				} else {
+					return back()->with('error','Data Kategori Gagal Diubah');
+				}
+			} else {
+				return back()->with('error','Harap Periksa Kembali file inputan Anda !!!');
+			}
+		} else {
+			$insert = KategoriOutlet::where('id', $request->id_kategori)->update([
+				"nm_kategori_outlet"	=> $request->nm_kategori,
+				"gbr_kategori_outlet"	=> "",
+				"sts_tampil"			=> $request->status
+			]);
+		}
+
+		if ($insert) {
+			return back()->with('success','Data Kategori Berhasil Diubah');
+		} else {
+			return back()->with('error','Data Kategori Gagal Diubah');
+		}
+	}
+
+	public function data_outlet($id){
+		$data = Outlet::where('id_kategori_outlet', $id)->get();
+		$kategori = KategoriOutlet::findOrFail($id);
+
+		return view('outlet.data_outlet', compact('data', 'kategori'));
+	}
+
+	public function simpan_outlet(Request $request)
 	{
 		$status = 0;
 		$kd_outlet = "";
@@ -29,36 +112,31 @@ class OutletController extends Controller
 			$status = 1	;
 		} 
 
-		$kd_outlet = $request->kd_outlet."";
-		if (! Schema::hasColumn('customer', $kd_outlet)) {
-			Schema::table('customer', function (Blueprint $table) use ($kd_outlet) {
-				$table->tinyInteger($kd_outlet)->default(1);
-			});
-		} else {
-			
-		}
-
 		if ($request->gambar_outlet != "") {
 			$path = $request->file('gambar_outlet')->store(
 				'gambar_outlet', 'public'
 			);
 
 			$insert = Outlet::insert([
-				'kd_outlet'			=> $request->kd_outlet,
-				'nama_outlet'		=> $request->nama_outlet,
-				'keterangan'		=> $request->keterangan,
-				'status'			=> $status,
-				'gambar_outlet'		=> $path,
-				'alamat'			=> $request->alamat
+				'id_kategori_outlet'	=> $request->id_kategori_outlet,
+				'nama_outlet'			=> $request->nama_outlet,
+				'keterangan'			=> $request->keterangan,
+				'status'				=> $status,
+				'gambar_outlet'			=> $path,
+				'alamat'				=> $request->alamat,
+				'lat'					=> $request->lat,
+				'long'					=> $request->long
 			]);
 		} else {
 			$insert = Outlet::insert([
-				'kd_outlet'			=> $request->kd_outlet,
-				'nama_outlet'		=> $request->nama_outlet,
-				'keterangan'		=> $request->keterangan,
-				'status'			=> $status,
-				'gambar_outlet'		=> "",
-				'alamat'			=> $request->alamat
+				'id_kategori_outlet'	=> $request->id_kategori_outlet,
+				'nama_outlet'			=> $request->nama_outlet,
+				'keterangan'			=> $request->keterangan,
+				'status'				=> $status,
+				'gambar_outlet'			=> "",
+				'alamat'				=> $request->alamat,
+				'lat'					=> $request->lat,
+				'long'					=> $request->long
 			]);
 		}
 
@@ -71,7 +149,7 @@ class OutletController extends Controller
 		}	
 	}
 
-	public function ubahOutlet(Request $request)
+	public function ubah_outlet(Request $request)
 	{
 		$status = 0;
 
@@ -84,20 +162,27 @@ class OutletController extends Controller
 				'gambar_outlet', 'public'
 			);
 
-			$insert = Outlet::where('kd_outlet', '=', $request->kd_outlet)->update([
-				'nama_outlet'		=> $request->nama_outlet,
-				'keterangan'		=> $request->keterangan,
-				'status'			=> $status,
-				'gambar_outlet'		=> $path,
-				'alamat'			=> $request->alamat
+			$insert = Outlet::where('id', '=', $request->id_outlet)->update([
+				'id_kategori_outlet'	=> $request->id_kategori_outlet,
+				'nama_outlet'			=> $request->nama_outlet,
+				'keterangan'			=> $request->keterangan,
+				'status'				=> $status,
+				'gambar_outlet'			=> $path,
+				'alamat'				=> $request->alamat,
+				'lat'					=> $request->lat,
+				'long'					=> $request->long
 			]);
 
 		} else {
-			$insert = Outlet::where('kd_outlet', '=', $request->kd_outlet)->update([
-				'nama_outlet'		=> $request->nama_outlet,
-				'keterangan'		=> $request->keterangan,
-				'status'			=> $status,
-				'alamat'			=> $request->alamat
+			$insert = Outlet::where('id', '=', $request->id_outlet)->update([
+				'id_kategori_outlet'	=> $request->id_kategori_outlet,
+				'nama_outlet'			=> $request->nama_outlet,
+				'keterangan'			=> $request->keterangan,
+				'status'				=> $status,
+				'gambar_outlet'			=> "",
+				'alamat'				=> $request->alamat,
+				'lat'					=> $request->lat,
+				'long'					=> $request->long
 			]);
 		}
 
@@ -110,9 +195,9 @@ class OutletController extends Controller
 		}
 	}
 
-	public function deleteOutlet($id)
+	public function hapus_outlet($id)
 	{
-		$insert = Outlet::where('kd_outlet', '=', $id)->delete();
+		$insert = Outlet::where('id', '=', $id)->delete();
 
 		if ($insert) {
 			Session::flash('success', "Data Berhasil Dihapus !!!");

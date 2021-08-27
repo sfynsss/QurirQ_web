@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="@@page-discription">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{url('images/favicon.png')}}">
+    <link rel="icon" type="image/png" href="{{url('assets/login/images/icons/logo.png')}}"/>
     <!-- Page Title  -->
-    <title>Larisso Admin</title>
+    <title>QurirQ</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{url('/assets/css/dashlite.css?ver=1.4.0')}}">
     <link id="skin-default" rel="stylesheet" href="{{url('assets/css/theme.css?ver=1.4.0')}}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhYpivDh3X593xIjPmfgqiMP3eB6KSbZM" async defer></script>
 
 </head>
 
