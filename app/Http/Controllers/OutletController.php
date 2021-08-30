@@ -179,7 +179,6 @@ class OutletController extends Controller
 				'nama_outlet'			=> $request->nama_outlet,
 				'keterangan'			=> $request->keterangan,
 				'status'				=> $status,
-				'gambar_outlet'			=> "",
 				'alamat'				=> $request->alamat,
 				'lat'					=> $request->lat,
 				'long'					=> $request->long

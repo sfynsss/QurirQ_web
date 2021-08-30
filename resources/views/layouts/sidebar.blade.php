@@ -38,6 +38,7 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="{{url('barang')}}" class="nk-menu-link"><span class="nk-menu-text">Barang</span></a>
+                                <a href="{{route('kategori_barang')}}" class="nk-menu-link"><span class="nk-menu-text">Kategori Barang</span></a>
                             </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item --><!-- .nk-menu-item -->

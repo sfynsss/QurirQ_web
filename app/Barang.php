@@ -13,6 +13,6 @@ class Barang extends Model
     protected $fillable = ['kd_brg','kd_kat_android'];
 
     function kategori(){
-    	return $this->belongsTo('QurirQ\KategoriAndroid');
+    	return $this->belongsTo('QurirQ\KategoriBarang', 'id_kategori_barang', 'id');
     }
 }

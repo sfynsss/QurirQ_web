@@ -44,9 +44,6 @@
                 <div class="form-control-wrap">
                   <select class="form-select" name="kat_barang" id="kat_barang">
                     <option disabled="true" selected="none">Pilih Salah Satu</option>
-                    @foreach($kat_barang as $kat_android)
-                    <option value="{{$kat_android->kd_kat_android}}">{{$kat_android->nm_kat_android}}</option>
-                    @endforeach
                   </select>
                 </div>
               </div>

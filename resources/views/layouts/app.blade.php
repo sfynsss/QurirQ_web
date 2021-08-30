@@ -14,8 +14,12 @@
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{url('/assets/css/dashlite.css?ver=1.4.0')}}">
     <link id="skin-default" rel="stylesheet" href="{{url('assets/css/theme.css?ver=1.4.0')}}">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhYpivDh3X593xIjPmfgqiMP3eB6KSbZM" async defer></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBhYpivDh3X593xIjPmfgqiMP3eB6KSbZM" async defer></script>
+    <style>
+        .pac-container {
+            z-index: 10000 !important;
+        }
+    </style>
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar">
@@ -168,16 +172,6 @@
 <script src="{{url('assets/js/bundle.js?ver=1.4.0')}}"></script>
 <script src="{{url('assets/js/scripts.js?ver=1.4.0')}}"></script>
 <script src="{{url('assets/js/charts/gd-general.js?ver=1.4.0')}}"></script>
-
-<script>
-    function setKategori($a, $b, $c, $d) {
-        $('#kd_kategori_edit').val($a);
-        $('#nm_kategori_edit').val($b);
-        $('#status').select2('val', $c);
-        $("#kd_outlet").val($d).trigger('change');
-    }
-
-</script>
 @yield('script')
 </body>
 
