@@ -53,29 +53,29 @@ Route::get('kategori_outlet', 'OutletController@kategori_outlet')->name('kategor
 Route::post('simpan_kategori_outlet', 'OutletController@simpan_kategori_outlet')->name('simpan_kategori_outlet');
 Route::post('ubah_kategori_outlet', 'OutletController@ubah_kategori_outlet')->name('ubah_kategori_outlet');
 Route::get('/data_outlet/{i}', 'OutletController@data_outlet')->name('data_outlet');
-// Route::get('/outlet', 'OutletController@index');
 Route::post('/simpan_outlet', 'OutletController@simpan_outlet')->name('simpan_outlet');
 Route::post('/ubah_outlet', 'OutletController@ubah_outlet')->name('ubah_outlet');
 Route::get('/hapus_outlet/{id}', 'OutletController@hapus_outlet')->name('hapus_outlet');
-
-Route::get('/detailOutlet/{id}', 'OutletController@detailOutlet');
-Route::post('/tambahKategoriOutlet', 'OutletController@tambahKategoriOutlet');
-Route::get('/deleteKategoriOutlet/{id}', 'OutletController@deleteKategoriOutlet');
+// Route::get('/outlet', 'OutletController@index');
+// Route::get('/detailOutlet/{id}', 'OutletController@detailOutlet');
+// Route::post('/tambahKategoriOutlet', 'OutletController@tambahKategoriOutlet');
+// Route::get('/deleteKategoriOutlet/{id}', 'OutletController@deleteKategoriOutlet');
 
 //Barang
 Route::get('data_barang/{i}', 'BarangController@data_barang')->name('data_barang');
 Route::post('simpan_barang/{i}', 'BarangController@simpan_barang')->name('simpan_barang');
 Route::post('ubah_barang', 'BarangController@ubah_barang')->name('ubah_barang');
-Route::get('barang', 'BarangController@barang');
-Route::get('barang/json', 'BarangController@datajson');
-Route::get('detail_barang/{kd_brg}', 'BarangController@detail_barang');
-Route::post('barang/import', 'BarangController@import');
+
 Route::get('kategori_barang', 'BarangController@kategori_barang')->name('kategori_barang');
 Route::post('simpan_kategori_barang', 'BarangController@simpan_kategori_barang')->name('simpan_kategori_barang');
 Route::post('ubah_kategori_barang', 'BarangController@ubah_kategori_barang')->name('ubah_kategori_barang');
-Route::post('edit_kategori', 'BarangController@edit_kategori');
-Route::post('barang/input_kategori', 'BarangController@inputKategori');
-Route::post('barang/edit_barang', 'BarangController@edit_barang');
+// Route::get('barang', 'BarangController@barang');
+// Route::get('barang/json', 'BarangController@datajson');
+// Route::get('detail_barang/{kd_brg}', 'BarangController@detail_barang');
+// Route::post('barang/import', 'BarangController@import');
+// Route::post('edit_kategori', 'BarangController@edit_kategori');
+// Route::post('barang/input_kategori', 'BarangController@inputKategori');
+// Route::post('barang/edit_barang', 'BarangController@edit_barang');
 //endOfBarang
 
 //penjualan

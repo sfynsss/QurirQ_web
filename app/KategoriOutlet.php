@@ -10,7 +10,7 @@ class KategoriOutlet extends Model
 
 	public $timestamps = false;
 
-	public function KategoriAndroid(){
-		return $this->hasMany(KategoriAndroid::class, 'kd_kat_android', 'id');
+	public function Outlet(){
+		return $this->hasMany('QurirQ\Outlet', 'id_kategori_outlet', 'id');
 	}
 }

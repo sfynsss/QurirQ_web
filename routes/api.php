@@ -40,6 +40,12 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('getKdPeg', 'Api\Auth\UserController@getKdPeg');	
 	//EndOfUser
 
+	//Outlet
+	Route::post('getKategoriOutlet', 'Api\OutletController@getKategoriOutlet')->name('getKategoriOutlet');
+	Route::get('getKodeOutlet', 'Api\OutletController@getKodeOutlet');
+	Route::get('getOutlet', 'Api\OutletController@getOutlet');
+	//endOfOutlet
+
 	//customer
 	Route::post('tambahCustomer', 'Api\CustomerController@tambahCustomer');	
 	Route::post('getCustomer', 'Api\CustomerController@getCustomer');	
@@ -141,11 +147,6 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('getGambarPromo', 'Api\PenawaranController@getGambarPromo');
 	//endOfPenawaran
-
-	//Outlet
-	Route::get('getKodeOutlet', 'Api\OutletController@getKodeOutlet');
-	Route::get('getOutlet', 'Api\OutletController@getOutlet');
-	//endOfOutlet
 
 	//offline
 	Route::post('inputPenjualanOffline', 'Api\PenjualanController@inputPenjualanOffline');
