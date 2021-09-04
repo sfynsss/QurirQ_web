@@ -19,7 +19,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Nama Barang</label>
@@ -28,7 +28,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Harga Jual</label>
@@ -37,7 +37,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Kategori Barang</label>
@@ -48,7 +48,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Gambar Barang</label>
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Diskon</label>
@@ -70,7 +70,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Harga Diskon</label>
@@ -79,7 +79,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Berat Barang (gram)</label>
@@ -88,7 +88,7 @@
                 </div>
               </div>
             </div>
-
+            
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="form-label" for="default-01">Volume (m3)</label>
@@ -99,12 +99,12 @@
             </div>
           </div>
           <br>
-
+          
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
