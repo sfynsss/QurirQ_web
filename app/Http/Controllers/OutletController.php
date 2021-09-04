@@ -84,7 +84,6 @@ class OutletController extends Controller
 		} else {
 			$insert = KategoriOutlet::where('id', $request->id_kategori)->update([
 				"nm_kategori_outlet"	=> $request->nm_kategori,
-				"gbr_kategori_outlet"	=> "",
 				"sts_tampil"			=> $request->status
 			]);
 		}
