@@ -5,6 +5,7 @@ namespace QurirQ\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use QurirQ\Http\Controllers\Controller;
 use QurirQ\KategoriOutlet;
+use QurirQ\Outlet;
 
 class OutletController extends Controller
 {
@@ -37,9 +38,9 @@ class OutletController extends Controller
 		return response()->json($tmp, 200);
 	}
 	
-	public function getOutlet()
+	public function getOutlet(Request $request)
 	{
-		$data = Outlet::where('status', '1')->get();
+		$data = Outlet::where('id_kategori_outlet', $request->id)->where('status', '1')->get();
 		
 		if ($data) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);

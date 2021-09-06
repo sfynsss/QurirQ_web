@@ -43,7 +43,7 @@ Route::middleware('auth:api')->group(function () {
 	//Outlet
 	Route::post('getKategoriOutlet', 'Api\OutletController@getKategoriOutlet')->name('getKategoriOutlet');
 	Route::get('getKodeOutlet', 'Api\OutletController@getKodeOutlet');
-	Route::get('getOutlet', 'Api\OutletController@getOutlet');
+	Route::post('getOutlet', 'Api\OutletController@getOutlet')->name('getOutlet');
 	//endOfOutlet
 
 	//customer
@@ -59,7 +59,7 @@ Route::middleware('auth:api')->group(function () {
 	//endOfKunjungan
 
 	//Barang
-	Route::post('getBarang', 'Api\BarangController@getBarang');
+	Route::post('getBarang', 'Api\BarangController@getBarang')->name('getBarang');
 	Route::post('getBarangByName', 'Api\BarangController@getBarangByName');
 	Route::post('getBarangSales', 'Api\BarangController@getBarangSales');
 	Route::post('getBarangDiskon', 'Api\BarangController@getBarangDiskon');

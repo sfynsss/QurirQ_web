@@ -11,7 +11,7 @@ class BarangController extends Controller
 {
 	public function getBarang(Request $request)
 	{
-		$data = Barang::where('kd_kat_android', '=', $request->kd_kategori)->where('kd_outlet', '=', $request->kd_outlet)->get();
+		$data = Barang::where('id_outlet', '=', $request->id_outlet)->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
