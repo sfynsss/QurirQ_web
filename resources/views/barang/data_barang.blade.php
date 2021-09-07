@@ -102,9 +102,9 @@
 
 		const inputHandler = function(e) {
 			var disc = document.getElementById('hrg_brg_edit').value * (e.target.value/100);
-			var total = parseInt(document.getElementById('hrg_brg_edit').value) + parseInt(disc);
+			// var total = parseInt(document.getElementById('hrg_brg_edit').value) - parseInt(disc);
 			//var disc = Math.ceil(document.getElementById('hrg_brg_edit').value * (e.target.value/100));
-			$('#harga_disc_brg_edit').val(total.toFixed(0));
+			$('#harga_disc_brg_edit').val(disc.toFixed(0));
 		}
 		
 		const inputHandler2 = function(e) {

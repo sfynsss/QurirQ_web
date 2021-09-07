@@ -11,7 +11,15 @@ class BarangController extends Controller
 {
 	public function getBarang(Request $request)
 	{
-		$data = Barang::where('id_outlet', '=', $request->id_outlet)->get();
+		if($request->filter == "all") {
+			$data = Barang::where('id_outlet', '=', $request->id_outlet)->get();
+		} else if($request->filter == "rendah") {
+			$data = Barang::where('id_outlet', '=', $request->id_outlet)->orderBy('harga_jl', 'asc')->get();
+		} else if($request->filter == "tinggi") {
+			$data = Barang::where('id_outlet', '=', $request->id_outlet)->orderBy('harga_jl', 'desc')->get();
+		} else if($request->filter == "diskon") {
+			$data = Barang::where('disc', '>', '0')->where('id_outlet', '=', $request->id_outlet)->get();
+		}
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
@@ -22,7 +30,7 @@ class BarangController extends Controller
 
 	public function getBarangByName(Request $request)
 	{
-		$data = Barang::where('nm_brg', 'like', '%'.$request->nm_brg.'%')->where('kd_outlet', '=', $request->kd_outlet)->get();
+		$data = Barang::where('nm_brg', 'like', '%'.$request->nm_brg.'%')->where('id_outlet', '=', $request->id_outlet)->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);

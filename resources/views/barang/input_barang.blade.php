@@ -79,7 +79,7 @@
               <div class="form-group">
                 <label class="form-label" for="default-01">Diskon (%)</label>
                 <div class="form-control-wrap">
-                  <input type="number" class="form-control" id="disc_brg_edit" name="disc_brg_edit" max="100">
+                  <input type="number" class="form-control" required id="disc_brg_edit" name="disc_brg_edit" max="100">
                 </div>
               </div>
             </div>
@@ -88,7 +88,7 @@
               <div class="form-group">
                 <label class="form-label" for="default-01">Harga Diskon</label>
                 <div class="form-control-wrap">
-                  <input type="number" class="form-control" id="harga_disc_brg_edit" name="harga_disc_brg_edit">
+                  <input type="number" class="form-control" required id="harga_disc_brg_edit" name="harga_disc_brg_edit">
                 </div>
               </div>
             </div>
