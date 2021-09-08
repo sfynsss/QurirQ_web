@@ -21,14 +21,14 @@ class PenjualanController extends Controller
 	public function inputToCart(Request $request)
 	{
 		$get = Cart::where('id_user', '=', $request->id_user)
-			->where('kd_brg', '=', $request->kd_brg)
-			->where('kd_outlet', '=', $request->kd_outlet)
+			->where('id_barang', '=', $request->id_barang)
+			->where('id_outlet', '=', $request->id_outlet)
 			->first();
 
 		if ($get) {
 			$update = Cart::where('id_user', '=', $request->id_user)
-				->where('kd_brg', '=', $request->kd_brg)
-				->where('kd_outlet', '=', $request->kd_outlet) 
+				->where('id_barang', '=', $request->id_barang)
+				->where('id_outlet', '=', $request->id_outlet) 
 				->increment("qty", $request->qty);
 
 			if ($update) {
@@ -37,65 +37,29 @@ class PenjualanController extends Controller
 				return response()->json(['message' => 'Update Jumlah Barang Gagal'], 401);
 			}	
 		} else {
-			if ($request->gambar == "" && !isset($request->sts_jual)) {
+			if ($request->gambar == "") {
 				$insert = Cart::insert([
 					"id_user"			=> $request->id_user,
-					"kd_brg"			=> $request->kd_brg,
+					"id_barang"			=> $request->id_barang,
 					"nm_brg"			=> $request->nm_brg,
 					"satuan1"			=> $request->satuan1,
 					"harga_jl"			=> str_replace(",", "", number_format($request->harga_jl)),
 					"qty"				=> $request->qty,
-					"berat"				=> $request->berat,
-					"volume"			=> $request->volume,
 					"gambar"			=> "",
 					"kategori_barang"	=> $request->kategori, 
-					"kd_outlet"			=> $request->kd_outlet,
-					"sts_jual"			=> 'RETAIL'
-				]);
-			} else if ($request->gambar == "" && $request->sts_jual == 'GROSIR'){
-				$insert = Cart::insert([
-					"id_user"			=> $request->id_user,
-					"kd_brg"			=> $request->kd_brg,
-					"nm_brg"			=> $request->nm_brg,
-					"satuan1"			=> $request->satuan1,
-					"harga_jl"			=> str_replace(",", "", number_format($request->harga_jl)),
-					"qty"				=> $request->qty,
-					"berat"				=> $request->berat,
-					"volume"			=> $request->volume,
-					"gambar"			=> "",
-					"kategori_barang"	=> $request->kategori, 
-					"kd_outlet"			=> $request->kd_outlet,
-					"sts_jual"			=> 'GROSIR'
-				]);
-			} else if (!isset($request->sts_jual)) {
-				$insert = Cart::insert([
-					"id_user"			=> $request->id_user,
-					"kd_brg"			=> $request->kd_brg,
-					"nm_brg"			=> $request->nm_brg,
-					"satuan1"			=> $request->satuan1,
-					"harga_jl"			=> str_replace(",", "", number_format($request->harga_jl)),
-					"qty"				=> $request->qty,
-					"berat"				=> $request->berat,
-					"volume"			=> $request->volume,
-					"gambar"			=> $request->gambar,
-					"kategori_barang"	=> $request->kategori, 
-					"kd_outlet"			=> $request->kd_outlet,
-					"sts_jual"			=> 'RETAIL'
+					"id_outlet"			=> $request->id_outlet,
 				]);
 			} else {
 				$insert = Cart::insert([
 					"id_user"			=> $request->id_user,
-					"kd_brg"			=> $request->kd_brg,
+					"id_barang"			=> $request->id_barang,
 					"nm_brg"			=> $request->nm_brg,
 					"satuan1"			=> $request->satuan1,
 					"harga_jl"			=> str_replace(",", "", number_format($request->harga_jl)),
 					"qty"				=> $request->qty,
-					"berat"				=> $request->berat,
-					"volume"			=> $request->volume,
 					"gambar"			=> $request->gambar,
 					"kategori_barang"	=> $request->kategori, 
-					"kd_outlet"			=> $request->kd_outlet,
-					"sts_jual"			=> 'GROSIR'
+					"id_outlet"			=> $request->id_outlet,
 				]);
 			}
 
@@ -109,12 +73,12 @@ class PenjualanController extends Controller
 
 	public function getDataCart(Request $request)
 	{
-		$data = Cart::select('cart.*', 'barang.gambar', 'barang.sts_point')
+		$data = Cart::select('cart.*', 'barang.gambar', 'barang.sts_point', 'outlet.nama_outlet')
 				->where('id_user', '=', $request->id_user)
-				->where('barang.kd_outlet', '=', $request->kd_outlet)
 				->where('cart.harga_jl', '!=', '0')
-				->join('barang', 'barang.kd_brg', '=', 'cart.kd_brg')
+				->join('barang', 'barang.id', '=', 'cart.id_barang')
 				->join('users', 'users.id', '=', 'cart.id_user')
+				->join('outlet', 'outlet.id', '=', 'cart.id_outlet')
 				->get();
 
 		if (count($data) > 0) {
