@@ -177,7 +177,7 @@ return [
         QurirQ\Providers\RouteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        // Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
@@ -233,7 +233,7 @@ return [
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        // 'Datatables' => Yajra\DataTables\Facades\DataTables::class,
+        'Datatables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

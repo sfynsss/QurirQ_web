@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Validator;
 use Session;
 use Redirect;
+use Datatables;
 
 class CustomerController extends Controller
 {
@@ -36,21 +37,36 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-    	$data = Customer::join('users', 'users.id', '=', 'customer.id')
-            ->where('KATEGORI', '=', 'RETAIL')
-            ->orderby('customer.KD_CUST', 'desc')->get();
-    	//$data = Customer::join('users', 'users.id', '=', 'customer.id')->where('customer.KD_CUST', '=', '99000011')->get();
-        if (Auth::user()->kd_outlet == "") {
-            $outlet = Outlet::all();
-        } else {
-            $outlet = Outlet::where('kd_outlet', '=', Auth::user()->kd_outlet)->get();
+        if ($request->ajax()) {
+            $data = Customer::join('users', 'users.id', '=', 'customer.id')->orderby('customer.KD_CUST', 'desc')->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+   
+                           $btn = "<a class='btn btn-warning m-r-10' href='' data-toggle='modal'  data-target='.bs-example-modal-lg' onclick='setIsi(".$row->KD_CUST.");'><i class='icon ni ni-pen-alt-fill'></i>&nbsp;Ubah</a>";
+                           
+     
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
         }
+        
+    	// $data = Customer::join('users', 'users.id', '=', 'customer.id')
+        //     ->where('KATEGORI', '=', 'RETAIL')
+        //     ->orderby('customer.KD_CUST', 'desc')->get();
+    	// //$data = Customer::join('users', 'users.id', '=', 'customer.id')->where('customer.KD_CUST', '=', '99000011')->get();
+        // if (Auth::user()->kd_outlet == "") {
+        //     $outlet = Outlet::all();
+        // } else {
+        //     $outlet = Outlet::where('kd_outlet', '=', Auth::user()->kd_outlet)->get();
+        // }
         
     	// print_r($cabang);
 
-        return view('customer.customer', compact('data', 'outlet'));
+        return view('customer.customer');
     }
 
     public function customerGrosir()

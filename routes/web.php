@@ -99,7 +99,7 @@ Route::get('laporanPenjualan', 'PenjualanController@laporanPenjualan');
 //endOfPenjualan
 
 //customer
-Route::get('/customer', 'CustomerController@index');
+Route::get('/customer', 'CustomerController@index')->name('customer');
 Route::get('/customerGrosir', 'CustomerController@customerGrosir');
 Route::post('/tambahCustomer', 'CustomerController@tambahCustomer');
 Route::post('/editCustomer', 'CustomerController@editCustomer');

@@ -10,8 +10,6 @@
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="form-body">
-                            <h5 class="box-title">Master Customer</h5>
-                            <hr class="m-t-0 m-b-40">
                             <input type="text" class="form-control" hidden readonly name="id_user" id="id_user">
                             <div class="row">
                                 <div class="col-md-6">
