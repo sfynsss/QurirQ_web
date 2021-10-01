@@ -38,15 +38,8 @@ class UserController extends Controller
 		$insert = Alamat::insert([
 			"id_user"			=> $request->id_user,
 			"nama_penerima"		=> $request->nama,
-			"provinsi"			=> $request->provinsi,
-			"kota"				=> $request->kota,
-			"kecamatan"			=> $request->kecamatan,
-			"kd_provinsi"		=> $request->kd_provinsi,
-			"kd_kota"			=> $request->kd_kota,
-			"kd_kecamatan"		=> $request->kd_kecamatan,
 			"alamat_lengkap"	=> $request->alamat,
 			"no_telp_penerima"	=> $request->no_telp,
-			"kode_pos"			=> $request->kode_pos,
 			"latitude"			=> $request->latitude,
 			"longitude"			=> $request->longitude
 
@@ -63,15 +56,8 @@ class UserController extends Controller
 	{
 		$insert = Alamat::where('kd_alamat', '=', $request->kd_alamat)->update([
 			"nama_penerima"		=> $request->nama,
-			"provinsi"			=> $request->provinsi,
-			"kota"				=> $request->kota,
-			"kecamatan"			=> $request->kecamatan,
-			"kd_provinsi"		=> $request->kd_provinsi,
-			"kd_kota"			=> $request->kd_kota,
-			"kd_kecamatan"		=> $request->kd_kecamatan,
 			"alamat_lengkap"	=> $request->alamat,
 			"no_telp_penerima"	=> $request->no_telp,
-			"kode_pos"			=> $request->kode_pos,
 			"latitude"			=> $request->latitude,
 			"longitude"			=> $request->longitude
 
