@@ -108,6 +108,7 @@ Route::middleware('auth:api')->group(function () {
 	//getVoucher
 
 	//cart
+	Route::post('cekOutlet', 'Api\PenjualanController@cekOutlet')->name('cekOutlet');
 	Route::post('inputToCart', 'Api\PenjualanController@inputToCart')->name('inputToCart');
 	Route::post('getDataCart', 'Api\PenjualanController@getDataCart')->name('getDataCart');
 	Route::post('getDataCartGrosir', 'Api\PenjualanController@getDataCartGrosir');
@@ -137,13 +138,15 @@ Route::middleware('auth:api')->group(function () {
 	//endOfNotification
 
 	//OngkirCod
-	Route::get('getOngkirCod', 'Api\OngkirCodController@getOngkirCod');
+	Route::get('getOngkirFood', 'Api\OngkirController@getOngkirFood');
+	Route::get('getOngkirSend', 'Api\OngkirController@getOngkirSend');
 
 	//Promo
 	Route::get('getPromo', 'Api\PromoController@getPromo');
 
 	//Penawaran
 	Route::get('getPenawaran', 'Api\PenawaranController@index');
+	Route::get('getPenawaranQsend', 'Api\PenawaranController@qsend');
 
 	Route::get('getGambarPromo', 'Api\PenawaranController@getGambarPromo');
 	//endOfPenawaran

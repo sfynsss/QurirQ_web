@@ -18,13 +18,31 @@ use DB;
 
 class PenjualanController extends Controller
 {
+	public function cekOutlet(Request $request)
+	{
+		$outlet = Cart::select('id_outlet')->where('id_user', '=', Auth::user()->id)->first();
+
+		if ($outlet->id_outlet == $request->id_outlet) {
+			return response()->json(['message' => 'Outlet sama'], 200);
+		} else {
+			return response()->json(['message' => 'Outlet beda'], 400);
+		}
+	}
+
 	public function inputToCart(Request $request)
 	{
-		$get = Cart::where('id_user', '=', $request->id_user)
+		$get = false;
+
+		if($request->status == "") {
+			$get = Cart::where('id_user', '=', $request->id_user)
 			->where('id_barang', '=', $request->id_barang)
 			->where('id_outlet', '=', $request->id_outlet)
-			->first();
-
+			->first();	
+		} else {
+			$delete = Cart::where('id_user', '=', Auth::user()->id)
+			->delete();
+		}
+		
 		if ($get) {
 			$update = Cart::where('id_user', '=', $request->id_user)
 				->where('id_barang', '=', $request->id_barang)
@@ -73,7 +91,7 @@ class PenjualanController extends Controller
 
 	public function getDataCart(Request $request)
 	{
-		$data = Cart::select('cart.*', 'barang.gambar', 'barang.sts_point', 'outlet.nama_outlet')
+		$data = Cart::select('cart.*', 'barang.gambar', 'barang.sts_point', 'outlet.nama_outlet', 'outlet.lat', 'outlet.long')
 				->where('id_user', '=', $request->id_user)
 				->where('cart.harga_jl', '!=', '0')
 				->join('barang', 'barang.id', '=', 'cart.id_barang')

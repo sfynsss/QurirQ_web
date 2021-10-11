@@ -6,11 +6,11 @@
     <div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Ongkir COD</h3>
+                <h3 class="nk-block-title page-title">Ongkir Send</h3>
             </div><!-- .nk-block-head-content -->
             <div class="nk-block-head-content">
                 <div class="toggle-wrap nk-block-tools-toggle">
-                    <button class="btn btn-primary" data-toggle="modal" data-target=".modal_input" onclick="setOngkirCod();">Tambah</button> 
+                    <button class="btn btn-primary" data-toggle="modal" data-target=".modal_input" onclick="setOngkirSend();">Tambah</button> 
                 </div>
             </div><!-- .nk-block-head-content -->
         </div><!-- .nk-block-between -->
@@ -18,11 +18,11 @@
 
     <div class="modal fade modal_input" id="modalku" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
-            <form action="{{url('/tambahOngkirCod')}}" method="post" id="link_url" name="link_url" class="form-horizontal" enctype="multipart/form-data">
+            <form action="{{url('/tambahOngkirSend')}}" method="post" id="link_url" name="link_url" class="form-horizontal" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myLargeModalLabel">Ongkir COD</h4>
+                        <h4 class="modal-title" id="myLargeModalLabel">Ongkir Send</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
@@ -110,8 +110,8 @@
                     @endif
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target=".modal_input" onclick="updateOngkirCod('{{$data->id}}', '{{$data->sts_aktif}}','{{$data->harga_awal}}', '{{$data->harga_per_km}}', '{{$data->harga_per_kg}}');">Ubah</button>
-                    <a href="/deleteOngkirCod/{{ $data->id }}" class="btn btn-danger" onclick="if (confirm('Hapus Item Terpilih?')){return true;}else{event.stopPropagation(); event.preventDefault();};">Hapus</a>
+                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target=".modal_input" onclick="updateOngkirSend('{{$data->id}}', '{{$data->sts_aktif}}','{{$data->harga_awal}}', '{{$data->harga_per_km}}', '{{$data->harga_per_kg}}');">Ubah</button>
+                    <a href="/deleteOngkirSend/{{ $data->id }}" class="btn btn-danger" onclick="if (confirm('Hapus Item Terpilih?')){return true;}else{event.stopPropagation(); event.preventDefault();};">Hapus</a>
                 </td>
             </tr>
             @endforeach
@@ -124,14 +124,14 @@
 
 @section('script')
 <script>
-    function setOngkirCod() {
+    function setOngkirSend() {
         $("#sts_aktif").val("");
         $("#harga_awal").val("");
         $("#harga_per_km").val("");
         $("#harga_per_kg").val("");
         $.ajax({
             type:'GET',
-            url:'/api/getOngkirCOD',
+            url:'/api/getOngkirSend',
             headers: {
                 "Accept":"application/json",
                 "Authorization":"Bearer {{Auth::user()->api_token}}"
@@ -143,8 +143,8 @@
         var uploadField = document.getElementById("customFile");
     }
 
-    function updateOngkirCod($a, $b, $c, $d, $e) {
-        $('#link_url').attr('action', '{{url('/updateOngkirCod')}}');
+    function updateOngkirSend($a, $b, $c, $d, $e) {
+        $('#link_url').attr('action', '{{url('/updateOngkirSend')}}');
         $("#id_ongkir").val($a);
         $("#sts_aktif").val($b);
         $("#harga_awal").val($c);

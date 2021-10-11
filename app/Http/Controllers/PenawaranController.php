@@ -4,6 +4,7 @@ namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
 use QurirQ\Penawaran;
+use QurirQ\PenawaranQsend;
 use QurirQ\GambarPromo;
 use Redirect;
 use Session;
@@ -14,6 +15,12 @@ class PenawaranController extends Controller
 	{
 		$data = Penawaran::all();
 		return view('Penawaran.penawaran', compact('data'));
+	}
+
+	public function qsend()
+	{
+		$data = PenawaranQsend::all();
+		return view('Penawaran_qsend.penawaran', compact('data'));
 	}
 
 	public function inputPenawaran(Request $request) {
@@ -33,6 +40,34 @@ class PenawaranController extends Controller
 			}
 		} else {
 			$insert = Penawaran::insert([
+				"gambar"		=> "",
+				"penawaran"	    => $request->penawaran
+			]);
+		}
+		if ($insert) {
+			return back()->with('success','Data Penawaran Berhasil Diinputkan');
+		} else {
+			return back()->with('error','Data Penawaran Gagal Diinputkan');
+		}
+	}
+
+	public function inputPenawaranQsend(Request $request) {
+
+		if ($request->gambar_penawaran != "") {
+			$path = $request->file('gambar_penawaran')->store(
+				'gambar_penawaran', 'public'
+			);
+
+			if ($path) {
+				$insert = PenawaranQsend::insert([
+					"gambar"		=> $path,
+					"penawaran"	    => $request->penawaran
+				]);
+			} else {
+				return back()->with('error','Harap Periksa Kembali file inputan Anda !!!');
+			}
+		} else {
+			$insert = PenawaranQsend::insert([
 				"gambar"		=> "",
 				"penawaran"	    => $request->penawaran
 			]);
@@ -72,9 +107,51 @@ class PenawaranController extends Controller
 
 	}
 
+	public function updatePenawaranQsend(Request $request)
+	{
+		if ($request->gambar_penawaran != "") {
+			$path = $request->file('gambar_penawaran')->store(
+				'gambar_penawaran', 'public'
+			);
+
+			$insert = PenawaranQsend::where('id', '=', $request->id_penawaran)->update([
+				'penawaran'		=> $request->penawaran,
+				'gambar'	=> $path,
+			]);
+
+		} else {
+			$insert = PenawaranQsend::where('id', '=', $request->id_penawaran)->update([
+				'penawaran'		=> $request->penawaran,
+			]);
+		}
+
+		if ($insert) {
+			Session::flash('success', "Data Berhasil Diubah !!!");
+			return Redirect::back();
+		} else {
+			Session::flash('error', "Data Gagal Diubah !!!");
+			return Redirect::back();
+		}
+
+	}
+
 	public function deletePenawaran($id)
 	{
 		$delete = Penawaran::findOrFail($id);
+		$delete->delete();
+		if ($delete) {
+			Session::flash('success', "Data Berhasil Dihapus !!!");
+			return Redirect::back();
+		} else {
+			Session::flash('error', "Data Gagal Dihapus !!!");
+			return Redirect::back();
+		}
+		return redirect()->route('penawaran');
+	}
+
+	public function deletePenawaranQsend($id)
+	{
+		$delete = PenawaranQsend::findOrFail($id);
 		$delete->delete();
 		if ($delete) {
 			Session::flash('success', "Data Berhasil Dihapus !!!");

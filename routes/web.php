@@ -157,6 +157,11 @@ Route::post('inputPenawaran', 'PenawaranController@inputPenawaran');
 Route::post('/updatePenawaran', 'PenawaranController@updatePenawaran');
 Route::get('/deletePenawaran/{id}', 'PenawaranController@deletePenawaran');
 
+Route::get('/penawaran_qsend', 'PenawaranController@qsend');
+Route::post('inputPenawaranQsend', 'PenawaranController@inputPenawaranQsend');
+Route::post('/updatePenawaranQsend', 'PenawaranController@updatePenawaranQsend');
+Route::get('/deletePenawaranQsend/{id}', 'PenawaranController@deletePenawaranQsend');
+
 Route::get('/gambarPromo', 'PenawaranController@gambarPromo');
 Route::post('inputGambarPromo', 'PenawaranController@inputGambarPromo');
 Route::post('/updateGambarPromo', 'PenawaranController@updateGambarPromo');
@@ -168,12 +173,17 @@ Route::get('/promo', 'PromoController@index');
 Route::post('/updatePromo', 'PromoController@updatePromo');
 
 //ongkir cod
-Route::get('/ongkircod', 'OngkirCodController@index');
-Route::post('/tambahOngkirCod', 'OngkirCodController@tambahOngkirCod');
-Route::get('/editOngkirCod/{id}', 'OngkirCodController@editOngkirCod');
-Route::post('/updateOngkirCod', 'OngkirCodController@updateOngkirCod');
-Route::get('/deleteOngkirCod/{id}', 'OngkirCodController@deleteOngkirCod');
+Route::get('/ongkirFood', 'OngkirController@index');
+Route::post('/tambahOngkirFood', 'OngkirController@tambahOngkirFood');
+Route::get('/editOngkirFood/{id}', 'OngkirController@editOngkirFood');
+Route::post('/updateOngkirFood', 'OngkirController@updateOngkirFood');
+Route::get('/deleteOngkirFood/{id}', 'OngkirController@deleteOngkirFood');
 
+Route::get('/ongkirSend', 'OngkirController@send');
+Route::post('/tambahOngkirSend', 'OngkirController@tambahOngkirSend');
+Route::get('/editOngkirSend/{id}', 'OngkirController@editOngkirSend');
+Route::post('/updateOngkirSend', 'OngkirController@updateOngkirSend');
+Route::get('/deleteOngkirSend/{id}', 'OngkirController@deleteOngkirSend');
 
 //pembayaran
 Route::post('/getStatusPembayaran', 'PembayaranController@get_transaction_status');
