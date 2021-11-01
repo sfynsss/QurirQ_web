@@ -3,135 +3,101 @@
 namespace QurirQ\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use QurirQ\MstJual;
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
-use FCM;
-use QurirQ\User;
-use QurirQ\Customer;
-use QurirQ\Notif;
-use QurirQ\DetNotif;
+use QurirQ\JenisPembayaran;
+use Redirect;
+use Session;
 
 class PembayaranController extends Controller
 {
-	public function __construct(Request $request)
+	public function index()
 	{
-		$this->request = $request;
-        // Set your Merchant Server Key
-		\Midtrans\Config::$serverKey = 'Mid-server-xTaMzZDeY2QEujZxMmpTXxIW';
-		//\Midtrans\Config::$serverKey = 'SB-Mid-server-fQhLQ_KX1fnc33JY51LS8Il0';
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-		//\Midtrans\Config::$isProduction = false;
-		\Midtrans\Config::$isProduction = true;
-        // Set sanitization on (default)
-		\Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-		\Midtrans\Config::$is3ds = true;
+		$data = JenisPembayaran::all();
+		
+		return view('jenis_pembayaran.index', compact('data'));
 	}
-
-	public function notification(Request $request)
-	{
-		// print_r("test")	;
-		$paymentNotification = new \Midtrans\Notification();
-
-		$transaction = $paymentNotification->transaction_status;
-		$orderId = $paymentNotification->transaction_id;
-
-		if ($transaction == 'settlement') {			
-			$firebase_token = MstJual::join('users', 'mst_jual.id_user', '=', 'users.id')->where('transaction_id', '=', $orderId)->first();			
-			$update = MstJual::where('transaction_id', '=', $orderId)->update([
-				'sts_byr'	=> 1
-			]);
-
-			// print_r($firebase_token->firebase_token);
-			if ($update) {
-				$title = "Larisso Apps";
-				$notif = "Pembayaran dengan no. Transaksi ".$firebase_token->no_ent." berhasil";
-				$jenis_notif = 2;
-
-				$save = Notif::insertGetId([
-					"judul"			=> $title,
-					"notif"			=> $notif,
-					"jenis_notif"	=> $jenis_notif
+	public function inputJenisPembayaran(Request $request) {
+		
+		if ($request->gambar_bank != "") {
+			$path = $request->file('gambar_bank')->store(
+				'gambar_bank', 'public'
+			);
+			
+			if ($path) {
+				$insert = JenisPembayaran::insert([
+					"gambar_bank"		=> $path,
+					"sts_aktif"	    	=> $request->sts_aktif,
+					"nama_bank"	    	=> $request->nama_bank,
+					"no_rekening"	    => $request->no_rekening,
+					"keterangan"	    => $request->keterangan
 				]);
-
-				$save2 = DetNotif::insert([
-					"kd_cust"	=> $firebase_token->kd_cust,
-					"id_notif"	=> $save
-				]);
-
-				if ($save) {
-					return "berhasil";
-				} else {
-					return "error send notif";
-				}
-
-				$optionBuilder = new OptionsBuilder();
-				$optionBuilder->setTimeToLive(60*20);
-
-				$notificationBuilder = new PayloadNotificationBuilder($title);
-				$notificationBuilder->setBody($notif)
-				->setSound('default')
-				->setClickAction('act_home')
-				->setBadge(1);
-
-				$dataBuilder = new PayloadDataBuilder();
-				$option = $optionBuilder->build();
-				$notification = $notificationBuilder->build();
-				$data = $dataBuilder->build();
-
-				$downstreamResponse = FCM::sendTo($firebase_token->firebase_token, $option, $notification, $data);
-				$downstreamResponse->numberSuccess();
-				$downstreamResponse->numberFailure();
-				$downstreamResponse->numberModification();
-				$downstreamResponse->tokensToDelete();
-				$downstreamResponse->tokensToModify();
-				$downstreamResponse->tokensToRetry();
-				$downstreamResponse->tokensWithError();
 			} else {
-				return 'error';
+				return back()->with('error','Harap Periksa Kembali file inputan Anda !!!');
 			}
-
-			// $data = MstJual::where('transaction_id', '=', $orderId)->get();
-			// dd($data);
 		} else {
-			return "not settlement";
+			$insert = JenisPembayaran::insert([
+				"gambar_bank"		=> "",
+				"sts_aktif"	    	=> $request->sts_aktif,
+				"nama_bank"	    	=> $request->nama_bank,
+				"no_rekening"	    => $request->no_rekening,
+				"keterangan"	    => $request->keterangan
+			]);
+		}
+		if ($insert) {
+			Session::flash('success', "Data Berhasil Ditambakan !!!");
+			return Redirect::back();
+		} else {
+			Session::flash('error', "Data Gagal Ditambahkan !!!");
+			return Redirect::back();
 		}
 	}
-
-	public function get_transaction_status($order_id){
-		try {
-			$get_transaction_status = \Midtrans\Transaction::status($order_id);
-		} catch (\Exception $e) {
-			return 'error';
+	
+	public function updateJenisPembayaran(Request $request)
+	{
+		if ($request->gambar_bank != "") {
+			$path = $request->file('gambar_bank')->store(
+				'gambar_bank', 'public'
+			);
+			
+			$insert = JenisPembayaran::where('id', '=', $request->id_jenis)->update([
+				"gambar_bank"		=> $path,
+				"sts_aktif"	    	=> $request->sts_aktif,
+				"nama_bank"	    	=> $request->nama_bank,
+				"no_rekening"	    => $request->no_rekening,
+				"keterangan"	    => $request->keterangan
+			]);
+			
+		} else {
+			$insert = JenisPembayaran::where('id', '=', $request->id_jenis)->update([
+				"sts_aktif"	    	=> $request->sts_aktif,
+				"nama_bank"	    	=> $request->nama_bank,
+				"no_rekening"	    => $request->no_rekening,
+				"keterangan"	    => $request->keterangan
+			]);
 		}
-
-		return $get_transaction_status->transaction_status;
-	}
-
-	public function get_paid(){
-		$data = MstJual::where('sts_byr', 0)->get();
-		if(!empty($data)){
-			foreach ($data as $value) {
-				$return = $this->get_transaction_status($value->transaction_id);
-				// dd($return);
-				if ($return == "settlement") {
-					$update = MstJual::where('no_ent', $value->no_ent)->update([
-						'sts_byr'	=> 1
-					]);
-				} else if ($return == "failur") {
-					$update = MstJual::where('no_ent', $value->no_ent)->update([
-						'sts_byr'	=> 2
-					]);
-				} else if ($return == "expire") {
-					$update = MstJual::where('no_ent', $value->no_ent)->update([
-						'sts_byr'	=> 2
-					]);
-				}
-			}
+		
+		if ($insert) {
+			Session::flash('success', "Data Berhasil Diubah !!!");
+			return Redirect::back();
+		} else {
+			Session::flash('error', "Data Gagal Diubah !!!");
+			return Redirect::back();
 		}
+		
 	}
+	
+	public function deleteJenisPembayaran($id)
+	{
+		$delete = JenisPembayaran::findOrFail($id);
+		$delete->delete();
+		if ($delete) {
+			Session::flash('success', "Data Berhasil Dihapus !!!");
+			return Redirect::back();
+		} else {
+			Session::flash('error', "Data Gagal Dihapus !!!");
+			return Redirect::back();
+		}
+		return redirect()->route('jenis_pembayaran');
+	}
+	
 }

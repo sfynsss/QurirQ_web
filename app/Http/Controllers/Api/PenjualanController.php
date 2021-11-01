@@ -216,70 +216,20 @@ class PenjualanController extends Controller
 
 	public function inputPenjualan(Request $request)
 	{
-		$kd_cust = Customer::where('id', '=', $request->kd_cust)->get();
-		if ($request->point == 0) {
-			$point = 0;
-		} else {
-			$point = $request->point;
-		}
-		if ($request->jns_pengiriman == "pickup") {
-			$mst = MstJual::insertGetId([
-				'no_ent'			=> $request->no_ent,
-				'id_user'			=> $request->kd_cust,
-				'kd_cust'			=> $kd_cust[0]->KD_CUST,
-				'nm_penerima'		=> $request->nm_penerima,
-				'alm_penerima'		=> $request->alm_penerima,
-				'no_telp_penerima'	=> $request->no_telp_penerima,
-				'total'				=> $request->total,
-				'disc_pr'			=> $request->disc_pr,
-				'disc_value'		=> $request->disc_value,
-				'kd_voucher'		=> $request->kd_voucher,
-				'jns_bayar'			=> $request->jns_bayar,
-				'netto'				=> $request->netto,
-				'ongkir'			=> "0",
-				'jns_pengiriman'	=> $request->jns_pengiriman,
-				'no_resi'			=> $request->no_resi,
-				'sts_byr'			=> $request->sts_bayar,
-				'sts_jual'			=> $request->sts_jual,
-				'transaction_id'	=> $request->transaction_id,
-				'va_number'			=> $request->no_va,
-				'bank_name'			=> $request->payment_bank,
-				'payment_type'		=> $request->payment_type,
-				'point'				=> $point
-			]);
-		} else {
-			$mst = MstJual::insertGetId([
-				'no_ent'			=> $request->no_ent,
-				'id_user'			=> $request->kd_cust,
-				'kd_cust'			=> $kd_cust[0]->KD_CUST,
-				'nm_penerima'		=> $request->nm_penerima,
-				'alm_penerima'		=> $request->alm_penerima,
-				'no_telp_penerima'	=> $request->no_telp_penerima,
-				'total'				=> $request->total,
-				'disc_pr'			=> $request->disc_pr,
-				'disc_value'		=> $request->disc_value,
-				'kd_voucher'		=> $request->kd_voucher,
-				'jns_bayar'			=> $request->jns_bayar,
-				'netto'				=> $request->netto,
-				'ongkir'			=> $request->ongkir,
-				'jns_pengiriman'	=> $request->jns_pengiriman,
-				'no_resi'			=> $request->no_resi,
-				'sts_byr'			=> $request->sts_bayar,
-				'sts_jual'			=> $request->sts_jual,
-				'transaction_id'	=> $request->transaction_id,
-				'va_number'			=> $request->no_va,
-				'bank_name'			=> $request->payment_bank,
-				'payment_type'		=> $request->payment_type,
-				'point'				=> $point
-			]);
-		}
-		
-
-		if ($request->kd_voucher != "") {
-			$update = Voucher::where('kd_voucher', '=', $request->kd_voucher)->update([
-				'status_voucher'	=> 'DIGUNAKAN'
-			]);
-		}
+		$mst = MstJual::insertGetId([
+			'id_user'			=> $request->id_user,
+			'nama_penerima'		=> $request->nama_penerima,
+			'alamat_penerima'	=> $request->alamat_penerima,
+			'no_telp_penerima'	=> $request->no_telp_penerima,
+			'lat_penerima'		=> $request->lat_penerima,
+			'lng_penerima'		=> $request->lng_penerima,
+			'jns_bayar'			=> $request->jns_bayar,
+			'ongkir'			=> $request->ongkir,
+			'netto'				=> $request->netto,
+			'grand_total'		=> $request->grand_total,
+			'sts_byr'			=> $request->sts_bayar,
+			'kd_outlet'			=> $request->kd_outlet
+		]);
 
 		$tmp_kd_brg			= explode(";", $request->kd_brg);
 		$tmp_nm_brg			= explode(";", $request->nm_brg);
@@ -289,12 +239,11 @@ class PenjualanController extends Controller
 		for ($i=0; $i < count($tmp_kd_brg); $i++) { 
 			$subtot = ($tmp_harga[$i] * $tmp_jumlah[$i]);
 			$det = DetJual::insert([
-				"no_ent"	=>	$request->no_ent,
+				"id_mst"	=>	$mst,
 				"kd_brg"	=>	$tmp_kd_brg[$i],
 				"nm_brg"	=>	$tmp_nm_brg[$i],
 				"harga"		=>	$tmp_harga[$i],
 				"jumlah"	=>	$tmp_jumlah[$i],
-				"satuan"	=>	$request->satuan,
 				"sub_total"	=>	$subtot
 			]);
 		}
@@ -302,106 +251,7 @@ class PenjualanController extends Controller
 		if ($det) {
 			$delete = Cart::where('id_user', '=', $request->kd_cust)->delete();
 			if ($delete) {
-				$sukses = "Input Order Berhasil";
-				return response()->json(compact('sukses'), 200);
-			} else {
-				return response()->json('Hapus Cart gagal', 404);	
-			}
-		} else {
-			return response()->json('Update gagal', 404);
-		}
-	}
-
-	public function inputPenjualangGrosir(Request $request)
-	{
-		$kd_cust = Customer::where('id', '=', $request->kd_cust)->get();
-		if ($request->point_grosir == 0) {
-			$point_grosir = 0;
-		} else {
-			$point_grosir = $request->point_grosir;
-		}
-		if ($request->jns_pengiriman == "pickup") {
-			$mst = MstJual::insertGetId([
-				'no_ent'			=> $request->no_ent,
-				'id_user'			=> $request->kd_cust,
-				'kd_cust'			=> $kd_cust[0]->KD_CUST,
-				'nm_penerima'		=> $request->nm_penerima,
-				'alm_penerima'		=> $request->alm_penerima,
-				'no_telp_penerima'	=> $request->no_telp_penerima,
-				'total'				=> $request->total,
-				'disc_pr'			=> $request->disc_pr,
-				'disc_value'		=> $request->disc_value,
-				'kd_voucher'		=> $request->kd_voucher,
-				'jns_bayar'			=> $request->jns_bayar,
-				'netto'				=> $request->netto,
-				'ongkir'			=> "0",
-				'jns_pengiriman'	=> $request->jns_pengiriman,
-				'no_resi'			=> $request->no_resi,
-				'sts_byr'			=> $request->sts_bayar,
-				'sts_jual'			=> $request->sts_jual,
-				'transaction_id'	=> $request->transaction_id,
-				'va_number'			=> $request->no_va,
-				'bank_name'			=> $request->payment_bank,
-				'payment_type'		=> $request->payment_type,
-				'point_grosir'		=> $point_grosir
-			]);
-		} else {
-			$mst = MstJual::insertGetId([
-				'no_ent'			=> $request->no_ent,
-				'id_user'			=> $request->kd_cust,
-				'kd_cust'			=> $kd_cust[0]->KD_CUST,
-				'nm_penerima'		=> $request->nm_penerima,
-				'alm_penerima'		=> $request->alm_penerima,
-				'no_telp_penerima'	=> $request->no_telp_penerima,
-				'total'				=> $request->total,
-				'disc_pr'			=> $request->disc_pr,
-				'disc_value'		=> $request->disc_value,
-				'kd_voucher'		=> $request->kd_voucher,
-				'jns_bayar'			=> $request->jns_bayar,
-				'netto'				=> $request->netto,
-				'ongkir'			=> $request->ongkir,
-				'jns_pengiriman'	=> $request->jns_pengiriman,
-				'no_resi'			=> $request->no_resi,
-				'sts_byr'			=> $request->sts_bayar,
-				'sts_jual'			=> $request->sts_jual,
-				'transaction_id'	=> $request->transaction_id,
-				'va_number'			=> $request->no_va,
-				'bank_name'			=> $request->payment_bank,
-				'payment_type'		=> $request->payment_type,
-				'point_grosir'		=> $point_grosir
-			]);
-		}
-		
-
-		if ($request->kd_voucher != "") {
-			$update = Voucher::where('kd_voucher', '=', $request->kd_voucher)->update([
-				'status_voucher'	=> 'DIGUNAKAN'
-			]);
-		}
-
-		$tmp_kd_brg			= explode(";", $request->kd_brg);
-		$tmp_nm_brg			= explode(";", $request->nm_brg);
-		$tmp_harga			= explode(";", $request->harga);
-		$tmp_jumlah			= explode(";", $request->jumlah);
-
-		for ($i=0; $i < count($tmp_kd_brg); $i++) { 
-			$subtot = ($tmp_harga[$i] * $tmp_jumlah[$i]);
-			$det = DetJual::insert([
-				"no_ent"	=>	$request->no_ent,
-				"kd_brg"	=>	$tmp_kd_brg[$i],
-				"nm_brg"	=>	$tmp_nm_brg[$i],
-				"harga"		=>	$tmp_harga[$i],
-				"jumlah"	=>	$tmp_jumlah[$i],
-				"satuan"	=>	$request->satuan,
-				"sub_total"	=>	$subtot
-			]);
-		}
-
-		if ($det) {
-			$delete = Cart::where('id_user', '=', $request->kd_cust)->delete();
-			if ($delete) {
-				$sukses = "Input Order Berhasil";
-				return response()->json(compact('sukses'), 200);
+				return response()->json(['message' => 'Pesanan berhasil ditempatkan'], 200);
 			} else {
 				return response()->json('Hapus Cart gagal', 404);	
 			}

@@ -166,6 +166,11 @@ Route::get('/gambarPromo', 'PenawaranController@gambarPromo');
 Route::post('inputGambarPromo', 'PenawaranController@inputGambarPromo');
 Route::post('/updateGambarPromo', 'PenawaranController@updateGambarPromo');
 Route::get('/deleteGambarPromo/{id}', 'PenawaranController@deleteGambarPromo');
+
+Route::get('/jenis_pembayaran', 'PembayaranController@index');
+Route::post('inputJenisPembayaran', 'PembayaranController@inputJenisPembayaran');
+Route::post('/updateJenisPembayaran', 'PembayaranController@updateJenisPembayaran');
+Route::get('/deleteJenisPembayaran/{id}', 'PembayaranController@deleteJenisPembayaran');
 //endofSetting
 
 //promo

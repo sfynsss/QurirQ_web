@@ -82,6 +82,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('getStatusTransaksi', 'Api\PenjualanController@getStatusTransaksi');
 	Route::post('batalkanTransaksi', 'Api\PenjualanController@batalkanTransaksi');
 
+	Route::post('inputQsend', 'Api\QsendController@inputQsend');
 
 	Route::post('getNoFaktur', 'Api\PenjualanController@getNoEntOrderJual');
 	Route::post('insertMasterOrderJual', 'Api\PenjualanController@insertMasterOrderJual');
@@ -127,7 +128,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('getKota', 'Api\PengirimanController@getKota');
 	Route::post('getKecamatan', 'Api\PengirimanController@getKecamatan');
 	Route::post('cekOngkir', 'Api\PengirimanController@cekOngkir');
-	Route::post('cekOngkirCod', 'Api\PengirimanController@cekOngkirCod');
+	Route::post('cekOngkirFood', 'Api\PengirimanController@cekOngkirFood');
+	Route::post('cekOngkirQsend', 'Api\PengirimanController@cekOngkirQsend');
+	Route::get('getOngkirQsend', 'Api\PengirimanController@getOngkirQsend');
 	Route::post('lacakPengiriman', 'Api\PengirimanController@lacakPengiriman');
 	Route::post('lacakResi', 'Api\PengirimanController@lacakResi');
 	//EndOfRajaOngkir
@@ -150,6 +153,9 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('getGambarPromo', 'Api\PenawaranController@getGambarPromo');
 	//endOfPenawaran
+
+	//JenisPembayaran
+	Route::get('getJenisPembayaran', 'Api\PembayaranController@index');
 
 	//offline
 	Route::post('inputPenjualanOffline', 'Api\PenjualanController@inputPenjualanOffline');

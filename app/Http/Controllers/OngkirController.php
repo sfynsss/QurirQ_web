@@ -77,6 +77,7 @@ class OngkirController extends Controller
 		$count = OngkirSend::all()->count();
 
 		$save = OngkirSend::insert([
+			"km_awal"			=> $request->km_awal,
 			"harga_awal"		=> $request->harga_awal,
 			"harga_per_km"		=> $request->harga_per_km,
 			"harga_per_kg"		=> $request->harga_per_kg,
@@ -95,6 +96,7 @@ class OngkirController extends Controller
 	public function updateOngkirSend(Request $request)
 	{
 		$save = OngkirSend::where('id', '=', $request->id_ongkir)->update([
+			"km_awal"			=> $request->km_awal,
 			"harga_awal"	=> $request->harga_awal,
 			"harga_per_km"	=> $request->harga_per_km,
 			"harga_per_kg"	=> $request->harga_per_kg,
