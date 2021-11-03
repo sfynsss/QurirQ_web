@@ -2,7 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            Larisso Apps
+            QurirQ Apps
         @endcomponent
     @endslot
 
@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            © {{ date('Y') }} Larisso. @lang('All rights reserved.')
+            © {{ date('Y') }} QurirQ. @lang('All rights reserved.')
         @endcomponent
     @endslot
 @endcomponent

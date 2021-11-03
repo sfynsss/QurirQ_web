@@ -10,63 +10,71 @@ use QurirQ\MstOrderJual;
 use QurirQ\DetOrderJual;
 use QurirQ\Barang;
 use QurirQ\Customer;
+use QurirQ\User;
 use Session;
 use Redirect;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\URL;
 use PDF;
+// use QurirQ\Http\Controllers\OptionsBuilder;
+// use QurirQ\Http\Controllers\PayloadDataBuilder;
+// use QurirQ\Http\Controllers\PayloadNotificationBuilder;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
 
 class PenjualanController extends Controller
 {
-
+    
     public function index()
     {
-    	$data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->get();
-    	// dd($data);
-    	return view('penjualan.penjualan', compact('data'));
+        $data = MstJual::orderBy('mst_jual.tanggal', 'desc')->get();
+        // dd($data);
+        return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function penjualanPickup()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'pickup')->get();
         return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function penjualanCOD()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'cod')->get();
         return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function penjualanJNE()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'jne')->get();
         return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function penjualanJNT()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'jnt')->get();
         return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function penjualanPOS()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'pos')->get();
         return view('penjualan.penjualan', compact('data'));
     }
-
+    
     public function laporanPenjualan()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')
-            ->where('sts_jual', '!=', 'OFFLINE')
-            ->where('sts_transaksi', '=', 'SELESAI')
-            ->whereDate('tanggal', Carbon::today())
-            ->orderBy('mst_jual.tanggal', 'desc')
-            ->get();
+        ->where('sts_jual', '!=', 'OFFLINE')
+        ->where('sts_transaksi', '=', 'SELESAI')
+        ->whereDate('tanggal', Carbon::today())
+        ->orderBy('mst_jual.tanggal', 'desc')
+        ->get();
         return view('penjualan.laporan_penjualan', compact('data'));
     }
-
+    
     public function detailJual($id)
     {
         $barang = Barang::All();
@@ -76,29 +84,58 @@ class PenjualanController extends Controller
         // print_r($mst);
         return view('penjualan.detailJual', compact('data', 'mst', 'barang'));
     }
-
-    public function detPenjualan($no_ent)
+    
+    public function detPenjualan($id)
     {
-    	$data = DetJual::where('no_ent', '=', str_replace('-', '/', $no_ent))->get();
-
-    	return json_encode($data);
+        $data = DetJual::where('id_mst', '=', $id)->get();
+        
+        return json_encode($data);
     }
-
-    public function inputResi(Request $request)
+    
+    public function inputQurir(Request $request)
     {
-    	$data = MstJual::where('no_ent', '=', $request->no_ent)->update([
-    		"no_resi" => $request->no_resi
-    	]);
-
-    	return back();	
+        $data = MstJual::where('id', '=', $request->id_mst)->update([
+            "id_qurir" => $request->qurir
+        ]);
+        
+        $update = User::where('id', '=', $request->qurir)->update([
+            'sts_online' => '2'
+        ]);
+        
+        $user = User::where('id', '=', $request->qurir)->first();
+        
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+        
+        $notificationBuilder = new PayloadNotificationBuilder("Pesanan Baru");
+        $notificationBuilder->setBody("Pesanan Baru Diterima")
+        ->setSound('default')
+        ->setClickAction('act_home')
+        ->setBadge(1);
+        
+        $dataBuilder = new PayloadDataBuilder();
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+        
+        $downstreamResponse = FCM::sendTo($user->firebase_token, $option, $notification, $data);
+        $downstreamResponse->numberSuccess();
+        $downstreamResponse->numberFailure();
+        $downstreamResponse->numberModification();
+        $downstreamResponse->tokensToDelete();
+        $downstreamResponse->tokensToModify();
+        $downstreamResponse->tokensToRetry();
+        $downstreamResponse->tokensWithError();
+        
+        return back();	
     }
-
+    
     public function gantiStatusTransaksi(Request $request)
     {
         $data = MstJual::where('no_ent', '=', $request->no_ent1)->update([
             "sts_transaksi" => $request->status
         ]);
-
+        
         if ($data) {
             Session::flash('success', "Data Berhasil Diupdate !!!");
             return Redirect::back();
@@ -107,14 +144,14 @@ class PenjualanController extends Controller
             return Redirect::back();
         }
     }    
-
+    
     public function orderPenjualan()
     {
         $data = MstOrderJual::join('customer', 'customer.KD_CUST', '=', 'mst_ord_jual_mob.KD_CUST')->get();
         // dd($data);
         return view('penjualan.order', compact('data'));
     }
-
+    
     public function detailOrder($id)
     {
         $barang = Barang::All();
@@ -123,14 +160,14 @@ class PenjualanController extends Controller
         // dd($id);
         return view('penjualan.detailOrder', compact('data', 'mst', 'barang'));
     }
-
+    
     public function simpanPenjualan(Request $request)
     {
         $no_ent = MstJual::where('id_user', '=', $request->id)->orderBy('no_ent', 'desc')->first();
         // $kd_cust = Customer::select('kd_cust')->where('id', '=', $request->id)->first();
-
+        
         date_default_timezone_set("Asia/Jakarta");
-
+        
         if ($no_ent) {
             $data = (int) substr($no_ent->no_ent, 15, 8) + 1;
             // print_r($data);
@@ -138,10 +175,10 @@ class PenjualanController extends Controller
         } else {
             $tmp = "INVJ".date('md').'/'.sprintf("%'.05d", $request->id).'/'.sprintf("%'.08d", 1);
         }
-
+        
         $mst_order = MstOrderJual::where('NO_ENT', '=', $request->no_ent)->get();
         $kd_cust = Customer::where('KD_CUST', '=', $mst_order[0]->KD_CUST)->get();
-
+        
         $mst = MstJual::insertGetId([
             'no_ent'            => $tmp,
             'id_user'           => $request->id,
@@ -161,9 +198,9 @@ class PenjualanController extends Controller
             'no_resi'           => "",
             'sts_byr'           => 0
         ]);
-
+        
         $det_order = DetOrderJual::where('NO_ENT', '=', $request->no_ent)->get();
-
+        
         for ($i=0; $i < count($det_order); $i++) { 
             $det = DetJual::insert([
                 "no_ent"    =>  $tmp,
@@ -175,12 +212,12 @@ class PenjualanController extends Controller
                 "sub_total" =>  $det_order[$i]->SUB_TOTAL
             ]);
         }
-
+        
         if ($det) {
             $mst_order = MstOrderJual::where('NO_ENT', '=', $request->no_ent)->update([
                 "PROSES"    => "JUAL"
             ]);
-
+            
             Session::flash('success', "Data Berhasil Ditambahkan !!!");
             return Redirect::back();
         } else {
@@ -188,11 +225,11 @@ class PenjualanController extends Controller
             return Redirect::back();
         }
     }
-
+    
     public function print_ticket($id)
     {
         $mst = MstJual::join('customer', 'customer.kd_cust', '=', 'mst_jual.kd_cust')->where('no_ent', '=', str_replace('-', '/', $id))->first();
-
+        
         $pdf = PDF::loadView('penjualan.print_ticket', compact('mst')); //load view page
         // return $pdf->download('Ticket '.$mst->no_ent.'.pdf'); // download pdf file
         return $pdf->stream(); // download pdf file

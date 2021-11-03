@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('login', 'Api\Auth\LoginController@login');
+Route::post('loginUser', 'Api\Auth\LoginController@loginUser');
+Route::post('loginDriver', 'Api\Auth\LoginController@loginDriver');
 Route::post('loginSales', 'Api\Auth\LoginController@loginSales');
 Route::post('register', 'Api\Auth\RegisterController@register');
 Route::post('cekRegis', 'Api\RegistrasiController@cekRegis');
@@ -28,6 +29,8 @@ Route::post('forgetPassword', 'Api\Auth\UserController@forgetPassword');
 Route::post('resendAktifasi', 'Api\Auth\UserController@resendAktifasi');
 Route::post('generateGrosirToken', 'Api\Auth\UserController@generateGrosirToken');
 Route::post('getOtp', 'Api\Auth\UserController@getOtp');
+Route::post('getBank', 'PembayaranController@getBank');
+Route::post('updateStsByr', 'PembayaranController@updateStsByr');
 
 Route::put('putStatusMstJual/{no_ent}', 'Api\PenjualanController@putStatusMstJual');
 
@@ -75,6 +78,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('inputPenjualan', 'Api\PenjualanController@inputPenjualan');
 	Route::post('inputPenjualanGrosir', 'Api\PenjualanController@inputPenjualanGrosir');
 	Route::post('getDataTransaksi', 'Api\PenjualanController@getDataTransaksi');
+	Route::post('getTransaksiDriver', 'Api\PenjualanController@getTransaksiDriver');
 	Route::post('getDataTransaksiSukses', 'Api\PenjualanController@getDataTransaksiSukses');
 	Route::post('getDataTransaksiPending', 'Api\PenjualanController@getDataTransaksiPending');
 	Route::post('getDataTransaksiBatal', 'Api\PenjualanController@getDataTransaksiBatal');

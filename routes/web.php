@@ -82,6 +82,7 @@ Route::post('ubah_kategori_barang', 'BarangController@ubah_kategori_barang')->na
 Route::get('penjualan', 'PenjualanController@index');
 Route::get('invoice/{id}', 'PenjualanController@detailJual');
 Route::get('detPenjualan/{no_ent}', 'PenjualanController@detPenjualan');
+Route::post('inputQurir', 'PenjualanController@inputQurir');
 
 Route::get('orderPenjualan', 'PenjualanController@orderPenjualan');
 Route::get('detailOrder/{id}', 'PenjualanController@detailOrder');
@@ -141,10 +142,11 @@ Route::post('/updateCabang', 'CabangController@updateCabang');
 //endOfUser
 
 //user
-Route::get('/user/{id}/{kd_outlet}', 'UserController@index');
+Route::get('/user/{id}', 'UserController@index');
 Route::post('/tambahUser/{id}', 'UserController@tambahUser');
 Route::get('/editUser/{id}', 'UserController@editUser');
 Route::post('/updateUser', 'UserController@updateUser');
+Route::get('/getKurir', 'UserController@getKurir');
 //endOfUser
 
 //email

@@ -43,27 +43,12 @@
 @section('script')
 <script>
     
-    // function setKdCust() {
-    //     $.ajax({
-    //         type:'POST',
-    //         url:'/api/getKodeCust',
-    //         headers: {
-    //             "Accept":"application/json",
-    //             "Authorization":"Bearer {{Auth::user()->api_token}}"
-    //         },
-    //         success:function(data){
-    //             $("input[name=kode_cust]").val(data);
-    //             // alert(data);
-    //         }
-    //     });
-    // }
-    
-    function setIsi($kd_cust) {
-        alert($kd_cust);
+    function setIsi($kd_cust, $email, $id) {
+        // alert($kd_cust);
         $("#kode_cust").val($kd_cust);
         $("#email").val($email);
         $("#id_user").val($id);
-        $("#password").val($id);
+        $("#password").val();
     }
     
     $(function () {

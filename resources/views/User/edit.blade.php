@@ -9,21 +9,23 @@
 				{{ csrf_field() }}
 				<div class="row gy-4">
 					<input type="text" name="id_user" value="{{$user->id}}" readonly="" hidden="">
+					@if ($user->otoritas == 'RESTO')
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label class="form-label" for="default-06">Outlet</label>
 							<div class="form-control-wrap ">
 								<div class="form-control-select">
-									<select class="form-control" id="default-06" required name="kd_outlet">
+									<select class="form-control" id="default-06" required name="id_outlet">
 										<option disabled="true" selected="none">Pilih Salah Satu</option>
 										@foreach($outlet as $outlet)
-										<option value="{{$outlet->kd_outlet}}">{{$outlet->nama_outlet}}</option>
+										<option value="{{$outlet->id}}" @if($outlet->id == $user->id_outlet) selected @endif>{{$outlet->nama_outlet}}</option>
 										@endforeach
 									</select>
 								</div>
 							</div>
 						</div>
 					</div>
+					@endif
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label class="form-label" for="default-01">Nama</label>

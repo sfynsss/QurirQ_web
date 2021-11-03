@@ -1,8 +1,8 @@
 @component('mail::message')
-<h1><b><center>Lupa password LarissoApps?</center></b></h1>
+<h1><b><center>Lupa password?</center></b></h1>
 <br>
 
-Kami mengirimkan email ini karena kamu meminta penggantian password LarissoApps. 
+Kami mengirimkan email ini karena kamu meminta penggantian password QurirQ. 
 Klik tombol di bawah ini untuk mengganti password :
 <br>
 
@@ -11,5 +11,5 @@ Ganti Password
 @endcomponent
 
 Thanks,<br>
-Larisso Group
+QurirQ Team
 @endcomponent

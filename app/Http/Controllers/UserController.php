@@ -10,21 +10,23 @@ use Redirect;
 
 class UserController extends Controller
 {
-	public function index($id, $kd_outlet)
+	public function index($id)
 	{
 		if ($id == "admin") {
-			if ($kd_outlet == "all") {
-				$data = User::join('outlet', 'outlet.kd_outlet', '=', 'users.kd_outlet')->where('otoritas', '=', 'ADMIN')->get();	
-			} else {
-				$data = User::join('outlet', 'outlet.kd_outlet', '=', 'users.kd_outlet')->where('users.kd_outlet', '=', $kd_outlet)->where('otoritas', '=', 'ADMIN')->get();	
-			}
-		} else if ($id == "sales") {
-			$data = User::where('otoritas', '=', 'SALES')->get();	
+			$data = User::where('otoritas', '=', 'ADMIN')->get();	
+		} else if ($id == "driver") {
+			$data = User::where('otoritas', '=', 'DRIVER')->get();	
+		} else if ($id == "resto") {
+			$data = User::where('otoritas', '=', 'RESTO')->get();	
 		}
 
-		$outlet = Outlet::all();
 		$status = $id;
-		return view('User.user', compact('data', 'status', 'outlet'));
+		if($id == 'resto') {
+			$outlet = Outlet::all();
+			return view('User.user', compact('data', 'status', 'outlet'));
+		} else {
+			return view('User.user', compact('data', 'status'));
+		}
 	}
 
 	public function tambahUser($id, Request $request)
@@ -42,7 +44,7 @@ class UserController extends Controller
 				'otoritas'	=> 'ADMIN',
 				'kd_outlet' => $request->kd_outlet
 			]);
-		} else if ($id == "sales") {
+		} else if ($id == "driver") {
 			$insert = User::insert([
 				'name' => $request->name,
 				'tanggal_lahir' => $request->tgl_lahir,
@@ -52,7 +54,21 @@ class UserController extends Controller
 				'password' => bcrypt($request->password),
 				'api_token' => bin2hex(openssl_random_pseudo_bytes(30)),
 				'email_activation' => '1', 
-				'otoritas'	=> 'SALES',
+				'otoritas'	=> 'DRIVER',
+				'kd_peg'	=> $request->kd_peg
+			]);	
+		} else if ($id == "resto") {
+			$insert = User::insert([
+				'name' => $request->name,
+				'tanggal_lahir' => $request->tgl_lahir,
+				'email' => $request->email,
+				'alamat' => $request->alamat,
+				'no_telp' => $request->no_telp,
+				'password' => bcrypt($request->password),
+				'api_token' => bin2hex(openssl_random_pseudo_bytes(30)),
+				'email_activation' => '1', 
+				'otoritas'	=> 'RESTO',
+				'id_outlet'	=> $request->id_outlet,
 				'kd_peg'	=> $request->kd_peg
 			]);	
 		}
@@ -76,20 +92,54 @@ class UserController extends Controller
 
 	public function updateUser(Request $request)
 	{
-		$update = User::where('id', '=', $request->id_user)->update([
-			'kd_outlet'	=> $request->kd_outlet,
-			'name'		=> $request->name,
-			'email'		=> $request->email,
-			'no_telp'	=> $request->no_telp,
-			'password'	=> bcrypt($request->password)
-		]);
+		if (isset($request->password)) {
+			if(isset($request->id_outlet)) {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'no_telp'	=> $request->no_telp,
+					'id_outlet'	=> $request->id_outlet,
+					'password'	=> bcrypt($request->password)
+				]);	
+			} else {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'no_telp'	=> $request->no_telp,
+					'password'	=> bcrypt($request->password)
+				]);	
+			}
+		} else {
+			if(isset($request->id_outlet)) {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'id_outlet'	=> $request->id_outlet,
+					'no_telp'	=> $request->no_telp
+				]);	
+			} else {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'no_telp'	=> $request->no_telp
+				]);	
+			}
+		}
 		
 		if ($update) {
 			Session::flash('success', "Data Berhasil Diubah !!!");
-			return redirect('user/admin/all');
+			return redirect('user/admin');
 		} else {
 			Session::flash('error', "Data Gagal Diubah !!!");
-			return redirect('user/admin/all');
+			return redirect('user/admin');
 		}
 	}
+
+	public function getKurir()
+	{
+		$data = User::where('otoritas', '=', 'DRIVER')->where('sts_online', '=', '1')->get();
+
+    	return json_encode($data);
+	}
+
 }

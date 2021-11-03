@@ -5,6 +5,7 @@ namespace QurirQ\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\RequestException;
 use QurirQ\JenisPembayaran;
+use QurirQ\MstJual;
 use Redirect;
 use Session;
 
@@ -16,6 +17,44 @@ class PembayaranController extends Controller
 		
 		return view('jenis_pembayaran.index', compact('data'));
 	}
+	
+	public function getBank(Request $request)
+	{
+		$data = JenisPembayaran::where('nama_bank', 'like', '%'.$request->nama_bank.'%')->get();
+		
+		if (count($data) > 0) {
+			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+		} else {
+			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+		}
+	}
+	
+	public function updateStsByr(Request $request)
+	{
+		$decode_image = base64_decode($request->bukti_tf);
+		$f = finfo_open();
+
+		$mime_type = finfo_buffer($f, $decode_image, FILEINFO_MIME_TYPE);
+		$extension = explode('/', $mime_type);
+
+		$nama_gbr = uniqid().".".$extension[1];
+
+		$p = \Storage::put('/public/bukti_tf/' . $nama_gbr, base64_decode($request->bukti_tf), 0755);
+		
+		if ($p) {
+			$data = MstJual::where('id', '=', $request->id_mst)->update([
+				'bukti_tf'	=> 'bukti_tf/'.$nama_gbr,
+				'sts_byr'	=> '1'
+			]);
+		}
+		
+		if ($data) {
+			return response()->json(['message' => 'Pembayaran Diterima'], 200);
+		} else {
+			return response()->json(['message' => 'Update pembayaran gagal'], 401);
+		}
+	}
+	
 	public function inputJenisPembayaran(Request $request) {
 		
 		if ($request->gambar_bank != "") {

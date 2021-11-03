@@ -15,4 +15,9 @@ class Barang extends Model
     function kategori(){
     	return $this->belongsTo('QurirQ\KategoriBarang', 'id_kategori_barang', 'id');
     }
+
+    public function outlet()
+    {
+        return $this->belongsTo('QurirQ\Outlet', 'id_outlet', 'id');
+    }
 }

@@ -37,7 +37,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="{{url('barang')}}" class="nk-menu-link"><span class="nk-menu-text">Barang</span></a>
+                                <a href="{{route('data_barang', 'all')}}" class="nk-menu-link"><span class="nk-menu-text">Barang</span></a>
                                 <a href="{{route('kategori_barang')}}" class="nk-menu-link"><span class="nk-menu-text">Kategori Barang</span></a>
                             </li>
                         </ul><!-- .nk-menu-sub -->
@@ -49,7 +49,7 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="{{url('outlet')}}" class="nk-menu-link"><span class="nk-menu-text">Outlet</span></a>
+                                <a href="{{route('data_outlet', 'all')}}" class="nk-menu-link"><span class="nk-menu-text">Outlet</span></a>
                             </li>
                         </ul><!-- .nk-menu-sub -->
                     </li><!-- .nk-menu-item --><!-- .nk-menu-item -->
@@ -61,9 +61,6 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="{{url('customer')}}" class="nk-menu-link"><span class="nk-menu-text">Customer</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{url('customerGrosir')}}" class="nk-menu-link"><span class="nk-menu-text">Customer Grosir</span></a>
                             </li>
                         </ul>
                     </li>
@@ -100,10 +97,13 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="{{url('user/admin/')}}/{{Auth::user()->kd_outlet}}" class="nk-menu-link"><span class="nk-menu-text">Admin</span></a>
+                                <a href="{{url('user/admin/')}}" class="nk-menu-link"><span class="nk-menu-text">Admin</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="{{url('user/sales/all')}}" class="nk-menu-link"><span class="nk-menu-text">Sales</span></a>
+                                <a href="{{url('user/driver')}}" class="nk-menu-link"><span class="nk-menu-text">Driver</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{url('user/resto')}}" class="nk-menu-link"><span class="nk-menu-text">Resto</span></a>
                             </li>
                         </ul>
                     </li>
@@ -114,19 +114,15 @@
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-wallet-out"></em></span>
-                            <span class="nk-menu-text">Penjualan</span>
+                            <span class="nk-menu-text">Q-Food</span>
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="{{url('penjualan')}}" class="nk-menu-link"><span class="nk-menu-text">Semua Penjualan</span></a>
+                                <a href="{{url('penjualan')}}" class="nk-menu-link"><span class="nk-menu-text">Penjualan</span></a>
                             </li>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="{{url('orderPenjualan')}}" class="nk-menu-link"><span class="nk-menu-text">Order Penjualan</span></a>
-                            </li>
-                            <li class="nk-menu-item">
+                            {{-- <li class="nk-menu-item">
                                 <a href="{{url('laporanPenjualan')}}" class="nk-menu-link"><span class="nk-menu-text">Laporan Penjualan</span></a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
 

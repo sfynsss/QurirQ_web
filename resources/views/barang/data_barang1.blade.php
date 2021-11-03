@@ -6,11 +6,13 @@
 	<div class="nk-block-head nk-block-head-sm">
 		<div class="nk-block-between">
 			<div class="nk-block-head-content">
-				<h3 class="nk-block-title page-title">Data Barang Outlet : {{ $outlet->nama_outlet }}</h3>
+				<h3 class="nk-block-title page-title">Data Barang Outlet</h3>
 			</div><!-- .nk-block-head-content -->
 			<div class="nk-block-head-content">
 				<div class="toggle-wrap nk-block-tools-toggle">
+					@if ($outlet != "all")
 					<button class="btn btn-primary" data-toggle="modal" data-target="#modalInput">tambah</button>
+					@endif
 				</div>
 			</div><!-- .nk-block-head-content -->
 		</div><!-- .nk-block-between -->
@@ -27,15 +29,14 @@
 							<span class="tb-odr-date d-none d-md-inline-block">Kategori Barang</span>
 						</th>
 						<th>
+							<span class="tb-odr-date d-none d-md-inline-block">Outlet</span>
+						</th>
+						<th>
 							<span class="tb-odr-date d-none d-md-inline-block">Nama Barang</span>
 						</th>
 						<th>
 							<span class="tb-odr-status d-none d-md-inline-block">Harga Jual</span>
 						</th>
-						<th>
-							<span class="tb-odr-status d-none d-md-inline-block">Kesediaan Gambar</span>
-						</th>
-						<th class="tb-odr-action">Aksi</th>
 					</tr>
 				</thead>
 				<tbody class="tb-odr-body">
@@ -43,22 +44,12 @@
 					<tr class="tb-odr-item">
 						<td>{{$i+1}}</td>
 						<td class="edit">{{$data->kategori->nm_kategori_barang}}</td>
+						<td class="edit">{{$data->outlet->nama_outlet}}</td>
 						<td>
 							<span class="tb-odr-date">{{$data->nm_brg}}</span>
 						</td>
 						<td>
 							@currency($data->harga_jl)
-						</td>
-						<td>
-							@if($data->gambar == "" or $data->gambar == "kosong")
-							Kosong
-							@else
-							Tersedia
-							@endif
-						</td>				
-						<td>
-							<a onclick="editBarang('{{$data->id}}', '{{$data->nm_brg}}', '{{$data->id_kategori_barang}}', '{{$data->hpp}}', '{{$data->harga_jl}}', '{{$data->disc}}', '{{$data->harga_disc}}', '{{$data->kd_kat_android}}', '{{$data->berat}}', '{{$data->volume}}')" class="btn btn-warning" data-toggle="modal" data-target="#modalInput">Ubah</a>
-							<a onclick="detailBarang('{{$data->id}}', '{{$data->nm_brg}}', '{{$data->kategori->nm_kategori_barang}}', '{{$data->hpp}}', '{{$data->harga_jl}}', '{{$data->disc}}', '{{$data->harga_disc}}', '{{$data->kd_kat_android}}', '{{$data->berat}}', '{{$data->volume}}')" class="btn btn-success" data-toggle="modal" data-target="#modal_detail">Detail</a>
 						</td>
 					</tr>
 					@endforeach
@@ -68,8 +59,10 @@
 	</div><!-- .card-preview -->
 </div>
 </div><!-- nk-block -->
+@if ($outlet != "all")
+@include('barang.input_barang')	
+@endif
 
-@include('barang.input_barang')
 @include('barang.detail_barang')
 @endsection
 
@@ -117,27 +110,6 @@
 		source3.addEventListener('input', inputHandler3);
 		source3.addEventListener('propertychange', inputHandler3);
 	});
-	
-	function bersih() {
-		$('#link_url').attr('action', '{{route('simpan_barang', $outlet->id)}}');
-		$('#nm_brg_edit').val("");
-		$('#hpp').val("");
-		$('#hrg_brg_edit').val("");
-		$('#disc_brg_edit').val("");
-		$('#harga_disc_brg_edit').val("");
-		$("#kat_barang").val(0).trigger('change');		
-	}
-
-	function editBarang($id_brg, $nm_brg, $id_kategori_barang, $hpp, $hrg, $disc, $harga_disc) {
-		$('#link_url').attr('action', '{{route('ubah_barang', $outlet->id)}}');
-		$('#id_brg').val($id_brg);
-		$('#nm_brg_edit').val($nm_brg);
-		$('#hpp').val($hpp);
-		$('#hrg_brg_edit').val($hrg);
-		$('#disc_brg_edit').val($disc);
-		$('#harga_disc_brg_edit').val($harga_disc);
-		$("#kat_barang").val($id_kategori_barang).trigger('change');		
-	}
 
 	function detailBarang($id_brg, $nm_brg, $kategori_barang, $hpp, $hrg, $disc, $harga_disc) {
 		document.getElementById('nama_barang').innerHTML = $nm_brg;	

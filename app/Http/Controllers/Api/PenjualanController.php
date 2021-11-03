@@ -111,7 +111,7 @@ class PenjualanController extends Controller
 		$data = Cart::select('cart.*', 'barang.gambar', 'barang.sts_point')
 				->where('id_user', '=', $request->id_user)
 				->where('barang.kd_outlet', '=', $request->kd_outlet)
-				->join('barang', 'barang.kd_brg', '=', 'cart.kd_brg')
+				->join('barang', 'barang.id', '=', 'cart.id_barang')
 				->join('users', 'users.id', '=', 'cart.id_user')
 				->where('users.otoritas', '=', 'GROSIR')
 				->get();
@@ -125,7 +125,7 @@ class PenjualanController extends Controller
 
 	public function updateCart(Request $request)
 	{
-		$update = Cart::where('id_user', '=', $request->id_user)->where('kd_brg', '=', $request->kd_brg)->update([
+		$update = Cart::where('id_user', '=', $request->id_user)->where('id_barang', '=', $request->kd_brg)->update([
 			"qty"				=> $request->qty,
 		]);
 
@@ -138,7 +138,7 @@ class PenjualanController extends Controller
 
 	public function deleteCart(Request $request)
 	{
-		$delete = Cart::where('id_user', '=', $request->id_user)->where('kd_brg', '=', $request->kd_brg)->delete();
+		$delete = Cart::where('id_user', '=', $request->id_user)->where('id_barang', '=', $request->kd_brg)->delete();
 
 		if ($delete) {
 			return response()->json(['message' => 'Barang Berhasil Dihapus'], 200);
@@ -228,7 +228,7 @@ class PenjualanController extends Controller
 			'netto'				=> $request->netto,
 			'grand_total'		=> $request->grand_total,
 			'sts_byr'			=> $request->sts_bayar,
-			'kd_outlet'			=> $request->kd_outlet
+			'id_outlet'			=> $request->kd_outlet
 		]);
 
 		$tmp_kd_brg			= explode(";", $request->kd_brg);
@@ -239,19 +239,19 @@ class PenjualanController extends Controller
 		for ($i=0; $i < count($tmp_kd_brg); $i++) { 
 			$subtot = ($tmp_harga[$i] * $tmp_jumlah[$i]);
 			$det = DetJual::insert([
-				"id_mst"	=>	$mst,
-				"kd_brg"	=>	$tmp_kd_brg[$i],
-				"nm_brg"	=>	$tmp_nm_brg[$i],
-				"harga"		=>	$tmp_harga[$i],
-				"jumlah"	=>	$tmp_jumlah[$i],
-				"sub_total"	=>	$subtot
+				"id_mst"		=>	$mst,
+				"id_barang"		=>	$tmp_kd_brg[$i],
+				"nm_brg"		=>	$tmp_nm_brg[$i],
+				"harga"			=>	$tmp_harga[$i],
+				"jumlah"		=>	$tmp_jumlah[$i],
+				"sub_total"		=>	$subtot
 			]);
 		}
 
 		if ($det) {
-			$delete = Cart::where('id_user', '=', $request->kd_cust)->delete();
+			$delete = Cart::where('id_user', '=', $request->id_user)->delete();
 			if ($delete) {
-				return response()->json(['message' => 'Pesanan berhasil ditempatkan'], 200);
+				return response()->json(['message' => $mst], 200);
 			} else {
 				return response()->json('Hapus Cart gagal', 404);	
 			}
@@ -262,7 +262,20 @@ class PenjualanController extends Controller
 
 	public function getDataTransaksi(Request $request)
 	{
-		$data = MstJual::select('mst_jual.no_ent', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.tanggal', 'mst_jual.jns_pengiriman', 'mst_jual.netto as total', 'mst_jual.ongkir', 'mst_jual.disc_value', DB::raw('count(det_jual.no_ent) AS jumlah'), 'mst_jual.payment_type', 'mst_jual.bank_name', 'mst_jual.va_number', 'mst_jual.sts_transaksi')->join('det_jual', 'det_jual.no_ent', '=', 'mst_jual.no_ent')->where('mst_jual.id_user', '=', $request->id)->groupby('mst_jual.no_ent', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.tanggal', 'mst_jual.jns_pengiriman', 'mst_jual.ongkir', 'mst_jual.disc_value', 'mst_jual.netto', 'mst_jual.payment_type', 'mst_jual.bank_name', 'mst_jual.va_number', 'mst_jual.sts_transaksi')->orderBy('mst_jual.no_ent')->get();
+		$data = MstJual::select('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal', 'mst_jual.grand_total as total', 'mst_jual.ongkir', DB::raw('count(det_jual.id_mst) AS jumlah'), 'mst_jual.sts_transaksi')
+		->join('det_jual', 'det_jual.id_mst', '=', 'mst_jual.id')->where('mst_jual.id_user', '=', $request->id)->groupby('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal', 
+		'mst_jual.ongkir', 'mst_jual.grand_total', 'mst_jual.sts_transaksi')->orderBy('mst_jual.id')->get();
+
+		if (count($data) > 0) {
+			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+		} else {
+			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+		}
+	}
+
+	public function getTransaksiDriver(Request $request)
+	{
+		$data = MstJual::join('outlet', 'outlet.id', '=', 'id_outlet')->where('mst_jual.id_qurir', '=', $request->id)->where('mst_jual.sts_transaksi', '!=', 'SELESAI')->where('mst_jual.sts_transaksi', '!=', 'BATAL')->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
@@ -477,56 +490,56 @@ class PenjualanController extends Controller
 		}
 	}
 
-	public function inputPenjualanOffline(Request $request)
-	{
-		$mst = MstJual::insert([
-			'no_ent'			=> $request->no_ent,
-			'tanggal'			=> $request->tanggal,
-			'netto'				=> $request->netto,
-			'kd_cust'			=> $request->kd_cust,
-			'id_user'			=> Auth::user()->id,
-			'kd_outlet'			=> Auth::user()->kd_outlet,
-			'point'				=> $request->point,
-			'sts_jual'			=> 'OFFLINE'
-		]);
+	// public function inputPenjualanOffline(Request $request)
+	// {
+	// 	$mst = MstJual::insert([
+	// 		'no_ent'			=> $request->no_ent,
+	// 		'tanggal'			=> $request->tanggal,
+	// 		'netto'				=> $request->netto,
+	// 		'kd_cust'			=> $request->kd_cust,
+	// 		'id_user'			=> Auth::user()->id,
+	// 		'kd_outlet'			=> Auth::user()->kd_outlet,
+	// 		'point'				=> $request->point,
+	// 		'sts_jual'			=> 'OFFLINE'
+	// 	]);
 
-		if ($mst) {
-			return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
-		} else {
-			return response()->json(['message' => 'Input Master Jual Gagal'], 401);
-		}
-	}
+	// 	if ($mst) {
+	// 		return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
+	// 	} else {
+	// 		return response()->json(['message' => 'Input Master Jual Gagal'], 401);
+	// 	}
+	// }
 
-	public function inputPenjualanOfflineGrosir(Request $request)
-	{
-		$mst = MstJual::insert([
-			'no_ent'			=> $request->no_ent,
-			'tanggal'			=> $request->tanggal,
-			'netto'				=> $request->netto,
-			'kd_cust'			=> $request->kd_cust,
-			'id_user'			=> Auth::user()->id,
-			'kd_outlet'			=> Auth::user()->kd_outlet,
-			'point_grosir'		=> $request->point_grosir,
-			'sts_jual'			=> 'OFFLINE'
-		]);
+	// public function inputPenjualanOfflineGrosir(Request $request)
+	// {
+	// 	$mst = MstJual::insert([
+	// 		'no_ent'			=> $request->no_ent,
+	// 		'tanggal'			=> $request->tanggal,
+	// 		'netto'				=> $request->netto,
+	// 		'kd_cust'			=> $request->kd_cust,
+	// 		'id_user'			=> Auth::user()->id,
+	// 		'kd_outlet'			=> Auth::user()->kd_outlet,
+	// 		'point_grosir'		=> $request->point_grosir,
+	// 		'sts_jual'			=> 'OFFLINE'
+	// 	]);
 
-		if ($mst) {
-			return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
-		} else {
-			return response()->json(['message' => 'Input Master Jual Gagal'], 401);
-		}
-	}
+	// 	if ($mst) {
+	// 		return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
+	// 	} else {
+	// 		return response()->json(['message' => 'Input Master Jual Gagal'], 401);
+	// 	}
+	// }
 
-	public function getNoResi(Request $request)
-	{
-		$data = MstJual::select('no_resi')->where('no_ent', '=', $request->no_ent)->get();
+	// public function getNoResi(Request $request)
+	// {
+	// 	$data = MstJual::select('no_resi')->where('no_ent', '=', $request->no_ent)->get();
 		
-		if ($data) {
-			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
-		} else {
-			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
-		}	
+	// 	if ($data) {
+	// 		return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+	// 	} else {
+	// 		return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+	// 	}	
 
-	}
+	// }
 
 }

@@ -29,11 +29,20 @@ class BarangController extends Controller
 
 	public function data_barang($id_outlet)
 	{
-		$data = Barang::where('id_outlet', $id_outlet)->get();
-		$outlet = Outlet::findOrFail($id_outlet);
+		if($id_outlet == "all") {
+			$data = Barang::all();
+			$outlet = "all";
+		} else {
+			$data = Barang::where('id_outlet', $id_outlet)->get();
+			$outlet = Outlet::findOrFail($id_outlet);
+		}
 		$kategori_barang = KategoriBarang::all();
 
-		return view('barang.data_barang', compact('data', 'outlet', 'kategori_barang'));
+		if($id_outlet == "all") {
+			return view('barang.data_barang1', compact('data', 'outlet', 'kategori_barang'));
+		}else {
+			return view('barang.data_barang', compact('data', 'outlet', 'kategori_barang'));	
+		}
 	}
 
 	public function import(Request $request)

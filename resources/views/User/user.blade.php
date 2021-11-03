@@ -9,8 +9,10 @@
             <div class="nk-block-head-content">
                 @if($status == "admin")
                 <h3 class="nk-block-title page-title">Data Users Admin</h3>
-                @elseif($status == "sales")
-                <h3 class="nk-block-title page-title">Data Users Sales</h3>
+                @elseif($status == "driver")
+                <h3 class="nk-block-title page-title">Data Users Driver</h3>
+                @elseif($status == "resto")
+                <h3 class="nk-block-title page-title">Data Users Resto</h3>
                 @endif
             </div><!-- .nk-block-head-content -->
             <div class="nk-block-head-content">
@@ -27,15 +29,12 @@
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
-                    @if($status == "sales")
-                    <th>Kode Pegawai</th>
-                    @endif
-                    @if($status == "admin")
-                    <th>Outlet</th>
-                    @endif
                     <th>Nama</th>
                     <th>Email</th>
                     <th>No Telp</th>
+                    @if ($status == 'resto')
+                    <th>Nama Resto</th>
+                    @endif
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -44,15 +43,12 @@
                 @foreach($data as $data)
                 <tr>
                     <td>{{$i++}}</td>
-                    @if($status == "sales")
-                    <td>{{$data->kd_peg}}</td>
-                    @endif
-                    @if($status == "admin")
-                    <td>{{$data->nama_outlet}}</td>
-                    @endif
                     <td>{{$data->name}}</td>
                     <td>{{$data->email}}</td>
                     <td>{{$data->no_telp}}</td>
+                    @if ($status == 'resto')
+                    <td>{{$data->outlet->nama_outlet}}</td>
+                    @endif
                     <td>
 {{--                         <button type="submit" class="btn btn-warning waves-effect text-left" onclick="setEdit('{{$data->kd_peg}}', '{{$data->name}}', '{{$data->email}}', '{{$data->tanggal_lahir}}', '{{$data->no_telp}}', '{{$data->alamat}}', '{{$data->cabang}}')" data-toggle="modal"  data-target=".bs-example-modal-lg">Edit</button> --}}
                     <a href="{{url('editUser')}}/{{$data->id}}" class="btn btn-success">Ubah</a>

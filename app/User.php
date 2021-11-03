@@ -40,4 +40,9 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
+    public function outlet()
+    {
+        return $this->belongsTo('QurirQ\Outlet', 'id_outlet', 'id');
+    }
+
 }
