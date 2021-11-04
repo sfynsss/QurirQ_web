@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-dialog modal-dialog-top modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Detail Penjualan</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Detail Pengiriman</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -114,7 +114,7 @@
 	<div class="nk-block-head nk-block-head col-xxl-12">
 		<div class="nk-block-between">
 			<div class="nk-block-head-content">
-				<h3 class="nk-block-title page-title">Penjualan</h3>
+				<h3 class="nk-block-title page-title">Data Q-Send</h3>
 			</div><!-- .nk-block-head-content -->
 		</div><!-- .nk-block-between -->
 	</div>
@@ -123,7 +123,7 @@
 			<div class="card-inner">
 				<div class="card-title-group">
 					<div class="card-title">
-						<h6 class="title"><span class="mr-2">Transaction</span></h6>
+						<h6 class="title"><span class="mr-2">pengiriman</span></h6>
 					</div>
 				</div>
 			</div>
@@ -135,8 +135,8 @@
 								<th>No</th>
 								<th>Tgl Transaksi</th>
 								<th>Qurir</th>
-								<th>Customer</th>
-								<th>Outlet</th>
+								<th>Pengirim</th>
+								<th>Alamat Pengirim</th>
 								<th>Total</th>
 								<th>Sts Transaksi</th>
 								<th>Sts Bayar</th>
@@ -148,22 +148,14 @@
 							@foreach ($data as $i => $data)
 							<tr class="nk-tb-item">
 								<td class="nk-tb-col">{{ $i+1 }}</td>
-								<td class="nk-tb-col">{{ substr($data->tanggal, 0, 10) }}</td>
+								<td class="nk-tb-col">{{ substr($data->tgl, 0, 10) }}</td>
 								<td class="nk-tb-col">{{ $data->id_qurir != null ? $data->qurir->name : "Belum ada Qurir" }}</td>
-								<td class="nk-tb-col">{{ $data->user->name }}</td>
-								<td class="nk-tb-col">{{ $data->outlet->nama_outlet }}</td>
-								<td class="nk-tb-col">{{ $data->grand_total }}</td>
+								<td class="nk-tb-col">{{ $data->pengirim }}</td>
+								<td class="nk-tb-col">{{ str_limit($data->alamat_pengirim, $limit = 50, $end = '...') }}</td>
+								<td class="nk-tb-col">@currency($data->total)</td>
 								<td class="nk-tb-col">{{ $data->sts_transaksi }}</td>
+								<td class="nk-tb-col">{{ $data->sts_bayar == "0" ? "Belum Terbayar" : "Terbayar" }}</td>
 								<td class="nk-tb-col">
-									@if ($data->sts_byr == "0")
-										Belum Terbayar
-									@elseif ($data->sts_byr == "1")
-										Terbayar
-									@else
-										Terverifikasi
-									@endif
-								</td>
-								<td>
 									@if (isset($data->bukti_tf))
 									<img src="{{asset('storage')}}/{{$data->bukti_tf}}" width="100" height="100">
 									@else
@@ -177,10 +169,7 @@
 											<ul class="link-list-plain">
 												<li><a class="dropdown-item" onclick="setId('{{$data->id}}');" data-toggle="modal" data-target="#exampleModal">View</a></li>
 												{{-- <li><a class="text-primary" onclick="setNoEnt1('{{$data->id}}');" data-toggle="modal" data-target=".modal_edit_status">Edit Status</a></li> --}}
-												@if ($data->sts_byr == 1 && isset($data->bukti_tf) && $data->sts_transaksi != "BATAL")
-												<a href="/verifPembayaran/{{ $data->id }}" class="text-success" onclick="if (confirm('Verifikasi Pembayaran?')){return true;}else{event.stopPropagation(); event.preventDefault();};">Verif Pembayaran</a>
-												@endif
-												@if ($data->sts_byr == 2 && $data->sts_transaksi == 'DITERIMA')
+												@if ($data->sts_byr == 1 && isset($data->bukti_tf))
 												<li><a class="text-primary" onclick="setKurir('{{$data->id}}');" data-toggle="modal" data-target="#modalKurir">Pilih Kurir</a></li>
 												@endif
 											</ul>
@@ -202,28 +191,29 @@
 <script>
 	function setId($id) {
 		var id = $id;
-		var view_url = "{{url('detPenjualan')}}"+"/"+id;
+		var view_url = "{{url('detQsend')}}"+"/"+id;
 		// alert(view_url);
 		$.getJSON(view_url,function(result){
 			// console.log(result);
 			$("#isi").empty();
 			$("#isi").append("<div class='nk-tb-item nk-tb-head'>"
 				+"<div class='nk-tb-col'><span>No</span></div>"
-				+"<div class='nk-tb-col'><span>Nama Barang</span></div>"
-				+"<div class='nk-tb-col'><span>Harga Jual</span></div>"
-				+"<div class='nk-tb-col'><span>Quantity</span></div>"
-				+"<div class='nk-tb-col'><span>Sub Total</span></div>"
+				+"<div class='nk-tb-col'><span>Nama Penerima</span></div>"
+				+"<div class='nk-tb-col'><span>No Telp</span></div>"
+				+"<div class='nk-tb-col'><span>Alamat</span></div>"
+				+"<div class='nk-tb-col'><span>Jarak</span></div>"
+				+"<div class='nk-tb-col'><span>Total</span></div>"
 				+"</div>")
 				var i = 1;
 				result.forEach(function(r){
 					$("#isi").append("<div class='nk-tb-item'>"
 						+"<div class='nk-tb-col'><span class='tb-sub'>"+i+"</span></div>"
-						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['nm_brg']+"</span></div>"
-						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['harga']+"</span></div>"
-						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['jumlah']+"</span></div>"
+						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['nama_penerima']+"</span></div>"
+						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['no_telp_penerima']+"</span></div>"
+						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['alamat_penerima']+"</span></div>"
+						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['jarak']+" Km</span></div>"
 						+"<div class='nk-tb-col'><span class='tb-sub'>"+r['sub_total']+"</span></div>"
-						+"<div>"
-							);
+						+"<div>");
 							i++;
 						});
 					});

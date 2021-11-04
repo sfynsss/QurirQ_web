@@ -81,8 +81,12 @@ Route::post('ubah_kategori_barang', 'BarangController@ubah_kategori_barang')->na
 //penjualan
 Route::get('penjualan', 'PenjualanController@index');
 Route::get('invoice/{id}', 'PenjualanController@detailJual');
+Route::get('verifPembayaran/{id}', 'PenjualanController@verifPembayaran');
 Route::get('detPenjualan/{no_ent}', 'PenjualanController@detPenjualan');
 Route::post('inputQurir', 'PenjualanController@inputQurir');
+
+Route::get('qsend', 'QsendController@qsend');
+Route::get('detQsend/{no_ent}', 'QsendController@detQsend');
 
 Route::get('orderPenjualan', 'PenjualanController@orderPenjualan');
 Route::get('detailOrder/{id}', 'PenjualanController@detailOrder');

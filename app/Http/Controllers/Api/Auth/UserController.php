@@ -10,6 +10,7 @@ use QurirQ\Mail\ForgetPassword;
 use QurirQ\User;
 use QurirQ\Alamat;
 use QurirQ\Update;
+use Auth;
 use DB;
 
 class UserController extends Controller
@@ -158,6 +159,43 @@ class UserController extends Controller
 			return response()->json(['message' => "not update"], 200);	
 		} else {
 			return response()->json(['message' => "update"], 200);	
+		}
+	}
+
+	public function getStatus()
+	{
+		$status = User::where('id', Auth::user()->id)->first();
+
+		if ($status) {
+			return response()->json(['message' => $status->sts_online], 200);	
+		} else {
+			return response()->json(['message' => 'Gagal'], 401);
+		}
+	}
+
+	public function updateStatus(Request $request)
+	{
+		$update = User::where('id', Auth::user()->id)->update([
+			'sts_online'	=> $request->sts_online
+		])->first();
+
+		if ($status) {
+			return response()->json(['message' => $update->sts_online], 200);	
+		} else {
+			return response()->json(['message' => 'Gagal'], 401);
+		}
+	}
+
+	public function logoutDriver()
+	{
+		$update = User::where('id', Auth::user()->id)->update([
+			'sts_online'	=> 0
+		]);
+
+		if ($update) {
+			return response()->json(['message' => "Logout Berhasil"], 200);	
+		} else {
+			return response()->json(['message' => 'Gagal'], 401);
 		}
 	}
 

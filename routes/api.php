@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::post('loginUser', 'Api\Auth\LoginController@loginUser');
 Route::post('loginDriver', 'Api\Auth\LoginController@loginDriver');
-Route::post('loginSales', 'Api\Auth\LoginController@loginSales');
+Route::post('loginOutlet', 'Api\Auth\LoginController@loginOutlet');
 Route::post('register', 'Api\Auth\RegisterController@register');
 Route::post('cekRegis', 'Api\RegistrasiController@cekRegis');
 Route::post('registrasi', 'Api\RegistrasiController@registrasi');
@@ -41,6 +41,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('ubahAlamat', 'Api\Auth\UserController@ubahAlamat');
 	Route::post('getAlamat', 'Api\Auth\UserController@getAlamat');
 	Route::get('getKdPeg', 'Api\Auth\UserController@getKdPeg');	
+	Route::get('getStatus', 'Api\Auth\UserController@getStatus');
+	Route::post('updateStatus', 'Api\Auth\UserController@updateStatus');
+	Route::get('logoutDriver', 'Api\Auth\UserController@logoutDriver');
 	//EndOfUser
 
 	//Outlet
@@ -79,11 +82,12 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('inputPenjualanGrosir', 'Api\PenjualanController@inputPenjualanGrosir');
 	Route::post('getDataTransaksi', 'Api\PenjualanController@getDataTransaksi');
 	Route::post('getTransaksiDriver', 'Api\PenjualanController@getTransaksiDriver');
-	Route::post('getDataTransaksiSukses', 'Api\PenjualanController@getDataTransaksiSukses');
-	Route::post('getDataTransaksiPending', 'Api\PenjualanController@getDataTransaksiPending');
-	Route::post('getDataTransaksiBatal', 'Api\PenjualanController@getDataTransaksiBatal');
+	Route::post('getTransaksiOutlet', 'Api\PenjualanController@getTransaksiOutlet');
+	// Route::post('getDataTransaksiSukses', 'Api\PenjualanController@getDataTransaksiSukses');
+	// Route::post('getDataTransaksiPending', 'Api\PenjualanController@getDataTransaksiPending');
+	// Route::post('getDataTransaksiBatal', 'Api\PenjualanController@getDataTransaksiBatal');
 	Route::post('getDetailTransaksi', 'Api\PenjualanController@getDetailTransaksi');
-	Route::post('getStatusTransaksi', 'Api\PenjualanController@getStatusTransaksi');
+	Route::post('updateStatusTransaksi', 'Api\PenjualanController@updateStatusTransaksi');
 	Route::post('batalkanTransaksi', 'Api\PenjualanController@batalkanTransaksi');
 
 	Route::post('inputQsend', 'Api\QsendController@inputQsend');

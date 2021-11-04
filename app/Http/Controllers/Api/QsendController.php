@@ -33,6 +33,7 @@ class QsendController extends Controller
         $tmp_lat_penerima               = explode(";", $request->lat_penerima);
         $tmp_lng_penerima               = explode(";", $request->lng_penerima);
         $tmp_sub_total                  = explode(";", $request->sub_total);
+        $tmp_jarak                      = explode(";", $request->jarak);
         
         for ($i=0; $i < count($tmp_nama_penerima); $i++) { 
             $det = DetQsend::insert([
@@ -45,7 +46,8 @@ class QsendController extends Controller
                 "detail_barang"             => $tmp_detail_barang[$i],
                 "lat_penerima"              => $tmp_lat_penerima[$i],
                 "lng_penerima"              => $tmp_lng_penerima[$i],
-                "sub_total"                 => $tmp_sub_total[$i]
+                "sub_total"                 => $tmp_sub_total[$i],
+                "jarak"                     => $tmp_jarak[$i]
             ]);
         }
         

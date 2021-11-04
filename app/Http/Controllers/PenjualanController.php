@@ -34,36 +34,6 @@ class PenjualanController extends Controller
         return view('penjualan.penjualan', compact('data'));
     }
     
-    public function penjualanPickup()
-    {
-        $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'pickup')->get();
-        return view('penjualan.penjualan', compact('data'));
-    }
-    
-    public function penjualanCOD()
-    {
-        $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'cod')->get();
-        return view('penjualan.penjualan', compact('data'));
-    }
-    
-    public function penjualanJNE()
-    {
-        $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'jne')->get();
-        return view('penjualan.penjualan', compact('data'));
-    }
-    
-    public function penjualanJNT()
-    {
-        $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'jnt')->get();
-        return view('penjualan.penjualan', compact('data'));
-    }
-    
-    public function penjualanPOS()
-    {
-        $data = MstJual::join('customer', 'customer.id', '=', 'id_user')->where('sts_jual', '!=', 'OFFLINE')->orderBy('mst_jual.tanggal', 'desc')->where('jns_pengiriman', '=', 'pos')->get();
-        return view('penjualan.penjualan', compact('data'));
-    }
-    
     public function laporanPenjualan()
     {
         $data = MstJual::join('customer', 'customer.id', '=', 'id_user')
@@ -90,6 +60,21 @@ class PenjualanController extends Controller
         $data = DetJual::where('id_mst', '=', $id)->get();
         
         return json_encode($data);
+    }
+
+    public function verifPembayaran($id)
+    {
+        $data = MstJual::where('id', '=', $id)->update([
+            'sts_byr'   => '2'
+        ]);
+        
+        if ($data) {
+            Session::flash('success', "Pembayaran Berhasil di Verifikasi !!!");
+            return Redirect::back();
+        } else {
+            Session::flash('error', "Pembayaran Gagal di Verifikasi !!!");
+            return Redirect::back();
+        }
     }
     
     public function inputQurir(Request $request)

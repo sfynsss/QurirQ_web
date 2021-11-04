@@ -60,15 +60,19 @@ class LoginController extends Controller
 		}
 	}
 
-	public function loginSales(Request $request)
+	public function loginOutlet(Request $request)
 	{
 		if (Auth::attempt(['email' => $request->email, 'password' => $request->password]) or Auth::attempt(['no_telp' => $request->email, 'password' => $request->password])) {
-			$data = User::where('id', '=', Auth::user()->id)->update([
-				'api_token' => bin2hex(openssl_random_pseudo_bytes(30))
-			]);
-			if ($data) {
-				$user = User::where('users.id', '=', Auth::user()->id)->first();
-				return response()->json(['user'	=> $user], 200);
+			if(Auth::user()->otoritas == "RESTO") {
+				$data = User::where('id', '=', Auth::user()->id)->update([
+					'api_token' => bin2hex(openssl_random_pseudo_bytes(30))
+				]);
+				if ($data) {
+					$user = User::leftjoin('alamat', 'users.id', '=', 'alamat.id_user')->where('users.id', '=', Auth::user()->id)->first();
+					return response()->json(['user'	=> $user], 200);
+				}
+			} else {
+				return response()->json(['error' => 'Unauthorised'], 402);	
 			}
 		} else {
 			return response()->json(['error' => 'Unauthorised'], 401);

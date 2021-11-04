@@ -19,4 +19,9 @@ class MstJual extends Model
     {
         return $this->belongsTo('QurirQ\User', 'id_qurir', 'id');
     }
+
+    public function outlet()
+    {
+        return $this->belongsTo('QurirQ\Outlet', 'id_outlet', 'id');
+    }
 }

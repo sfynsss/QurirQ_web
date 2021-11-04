@@ -262,9 +262,14 @@ class PenjualanController extends Controller
 
 	public function getDataTransaksi(Request $request)
 	{
-		$data = MstJual::select('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal', 'mst_jual.grand_total as total', 'mst_jual.ongkir', DB::raw('count(det_jual.id_mst) AS jumlah'), 'mst_jual.sts_transaksi')
-		->join('det_jual', 'det_jual.id_mst', '=', 'mst_jual.id')->where('mst_jual.id_user', '=', $request->id)->groupby('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal', 
-		'mst_jual.ongkir', 'mst_jual.grand_total', 'mst_jual.sts_transaksi')->orderBy('mst_jual.id')->get();
+		$data = MstJual::select('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal', 'mst_jual.grand_total as total', 'mst_jual.ongkir', 
+		DB::raw('count(det_jual.id_mst) AS jumlah'), 'mst_jual.sts_transaksi', 'outlet.nama_outlet', 'users.name', 'users.no_telp')
+		->join('det_jual', 'det_jual.id_mst', '=', 'mst_jual.id')
+		->join('outlet', 'outlet.id', '=', 'mst_jual.id_outlet')
+		->leftjoin('users', 'users.id', '=', 'mst_jual.id_qurir')
+		->where('mst_jual.id_user', '=', $request->id)
+		->groupby('mst_jual.id', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.jns_bayar', 'mst_jual.tanggal',
+		'mst_jual.ongkir', 'mst_jual.grand_total', 'mst_jual.sts_transaksi', 'outlet.nama_outlet', 'users.name', 'users.no_telp')->orderBy('mst_jual.id')->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
@@ -284,11 +289,28 @@ class PenjualanController extends Controller
 		}
 	}
 
+	public function getTransaksiOutlet(Request $request)
+	{
+		$data = MstJual::select('mst_jual.id', 'mst_jual.nama_penerima',DB::raw('count(det_jual.id_mst) AS jumlah'), 'mst_jual.sts_transaksi')
+		->join('det_jual', 'det_jual.id_mst', '=', 'mst_jual.id')
+		->where('mst_jual.id_outlet', '=', $request->id)->where('mst_jual.sts_byr', '=', '2')
+		->groupby('mst_jual.id', 'mst_jual.nama_penerima', 'mst_jual.sts_transaksi')->orderBy('mst_jual.id')->get();
+		
+		if (count($data) > 0) {
+			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+		} else {
+			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+		}
+	}
+
 	public function getDataTransaksiSukses(Request $request)
 	{
 		$data = MstJual::select('mst_jual.no_ent', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.tanggal', 'mst_jual.jns_pengiriman', 'mst_jual.netto as total', 'mst_jual.ongkir', 'mst_jual.disc_value', DB::raw('count(det_jual.no_ent) AS jumlah'), 'mst_jual.payment_type', 'mst_jual.bank_name', 'mst_jual.va_number', 'mst_jual.sts_transaksi')->join('det_jual', 'det_jual.no_ent', '=', 'mst_jual.no_ent')
 			->where('mst_jual.id_user', '=', $request->id)
-			->where('mst_jual.sts_transaksi', '=', 'SELESAI')->groupby('mst_jual.no_ent', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.tanggal', 'mst_jual.jns_pengiriman', 'mst_jual.ongkir', 'mst_jual.disc_value', 'mst_jual.netto', 'mst_jual.payment_type', 'mst_jual.bank_name', 'mst_jual.va_number', 'mst_jual.sts_transaksi')->orderBy('mst_jual.no_ent')->get();
+			->where('mst_jual.sts_transaksi', '!=', 'SELESAI')
+			->where('mst_jual.sts_transaksi', '!=', 'BATAL')
+			->groupby('mst_jual.no_ent', 'mst_jual.id_user', 'mst_jual.sts_byr', 'mst_jual.tanggal', 'mst_jual.jns_pengiriman', 'mst_jual.ongkir', 'mst_jual.disc_value', 'mst_jual.netto', 'mst_jual.payment_type', 'mst_jual.bank_name', 'mst_jual.va_number', 'mst_jual.sts_transaksi')
+			->orderBy('mst_jual.no_ent')->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
@@ -327,7 +349,7 @@ class PenjualanController extends Controller
 
 	public function getDetailTransaksi(Request $request)
 	{
-		$data = DetJual::where('no_ent', '=', $request->no_ent)->get();
+		$data = DetJual::where('id_mst', '=', $request->id)->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
@@ -338,7 +360,7 @@ class PenjualanController extends Controller
 
 	public function batalkanTransaksi(Request $request)
 	{
-		$data = MstJual::where('no_ent', '=', $request->no_ent)->update([
+		$data = MstJual::where('id', '=', $request->id)->update([
 			'sts_transaksi' => 'BATAL'
 		]);
 
@@ -349,14 +371,20 @@ class PenjualanController extends Controller
 		}
 	}
 
-	public function getStatusTransaksi(Request $request)
+	public function updateStatusTransaksi(Request $request)
 	{
-		$data = MstJual::select('sts_transaksi')->where('no_ent', '=', $request->no_ent)->get();
+		$data = MstJual::where('id', '=', $request->id)->update([
+            "sts_transaksi" => $request->status
+        ])->first();
 
-		if (count($data) > 0) {
-			return response()->json(['message' => 'Data Ditemukan', 'data' => $data[0]], 200);
+		// if ($request->status == "DITERIMA") {
+			
+		// }
+
+		if ($data) {
+			return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
 		} else {
-			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+			return response()->json(['message' => 'Data Gagal Dirubah'], 401);
 		}
 	}
 
@@ -489,57 +517,5 @@ class PenjualanController extends Controller
 			return response()->json(['message' => 'Ubah Status MST Jual Gagal'], 401);
 		}
 	}
-
-	// public function inputPenjualanOffline(Request $request)
-	// {
-	// 	$mst = MstJual::insert([
-	// 		'no_ent'			=> $request->no_ent,
-	// 		'tanggal'			=> $request->tanggal,
-	// 		'netto'				=> $request->netto,
-	// 		'kd_cust'			=> $request->kd_cust,
-	// 		'id_user'			=> Auth::user()->id,
-	// 		'kd_outlet'			=> Auth::user()->kd_outlet,
-	// 		'point'				=> $request->point,
-	// 		'sts_jual'			=> 'OFFLINE'
-	// 	]);
-
-	// 	if ($mst) {
-	// 		return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
-	// 	} else {
-	// 		return response()->json(['message' => 'Input Master Jual Gagal'], 401);
-	// 	}
-	// }
-
-	// public function inputPenjualanOfflineGrosir(Request $request)
-	// {
-	// 	$mst = MstJual::insert([
-	// 		'no_ent'			=> $request->no_ent,
-	// 		'tanggal'			=> $request->tanggal,
-	// 		'netto'				=> $request->netto,
-	// 		'kd_cust'			=> $request->kd_cust,
-	// 		'id_user'			=> Auth::user()->id,
-	// 		'kd_outlet'			=> Auth::user()->kd_outlet,
-	// 		'point_grosir'		=> $request->point_grosir,
-	// 		'sts_jual'			=> 'OFFLINE'
-	// 	]);
-
-	// 	if ($mst) {
-	// 		return response()->json(['message' => 'Input Master Jual Berhasil'], 200);
-	// 	} else {
-	// 		return response()->json(['message' => 'Input Master Jual Gagal'], 401);
-	// 	}
-	// }
-
-	// public function getNoResi(Request $request)
-	// {
-	// 	$data = MstJual::select('no_resi')->where('no_ent', '=', $request->no_ent)->get();
-		
-	// 	if ($data) {
-	// 		return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
-	// 	} else {
-	// 		return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
-	// 	}	
-
-	// }
 
 }
