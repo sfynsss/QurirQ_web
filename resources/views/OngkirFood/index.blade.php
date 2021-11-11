@@ -6,7 +6,7 @@
     <div class="nk-block-head nk-block-head-sm">
         <div class="nk-block-between">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Ongkir COD</h3>
+                <h3 class="nk-block-title page-title">Ongkir Food</h3>
             </div><!-- .nk-block-head-content -->
             <div class="nk-block-head-content">
                 <div class="toggle-wrap nk-block-tools-toggle">
@@ -40,6 +40,14 @@
                                                 <option value="0">Non-Aktif</option>
                                             </select>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label text-left col-md-6">Kilometer Awal</label>
+                                    <div class="col-md-6">
+                                        <input type="number" min="0" class="form-control" required name="km_awal" id="km_awal">
                                     </div>
                                 </div>
                             </div>
@@ -87,6 +95,7 @@
         <thead class="tb-odr-head">
             <tr class="tb-odr-item">
                 <th>No</th>
+                <th>Km Awal</th>
                 <th>Harga Awal</th>
                 <th>Harga per Km</th>
                 <th>Harga per Kg</th>
@@ -99,6 +108,7 @@
             @foreach($data as $data)
             <tr class="tb-odr-item">
                 <td>{{$i++}}</td>
+                <td>{{$data->km_awal}} Km</td>
                 <td>Rp.{{$data->harga_awal}}</td>
                 <td>Rp.{{$data->harga_per_km}}</td>
                 <td>Rp.{{$data->harga_per_kg}}</td>
@@ -110,7 +120,7 @@
                     @endif
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target=".modal_input" onclick="updateOngkirFood('{{$data->id}}', '{{$data->sts_aktif}}','{{$data->harga_awal}}', '{{$data->harga_per_km}}', '{{$data->harga_per_kg}}');">Ubah</button>
+                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target=".modal_input" onclick="updateOngkirFood('{{$data->id}}', '{{$data->sts_aktif}}','{{$data->km_awal}}','{{$data->harga_awal}}', '{{$data->harga_per_km}}', '{{$data->harga_per_kg}}');">Ubah</button>
                     <a href="/deleteOngkirFood/{{ $data->id }}" class="btn btn-danger" onclick="if (confirm('Hapus Item Terpilih?')){return true;}else{event.stopPropagation(); event.preventDefault();};">Hapus</a>
                 </td>
             </tr>
@@ -126,6 +136,7 @@
 <script>
     function setOngkirFood() {
         $("#sts_aktif").val("");
+        $("#km_awal").val("");
         $("#harga_awal").val("");
         $("#harga_per_km").val("");
         $("#harga_per_kg").val("");
@@ -143,13 +154,14 @@
         var uploadField = document.getElementById("customFile");
     }
 
-    function updateOngkirFood($a, $b, $c, $d, $e) {
+    function updateOngkirFood($a, $b, $c, $d, $e, $f) {
         $('#link_url').attr('action', '{{url('/updateOngkirFood')}}');
         $("#id_ongkir").val($a);
         $("#sts_aktif").val($b);
-        $("#harga_awal").val($c);
-        $("#harga_per_km").val($d);
-        $("#harga_per_kg").val($e);
+        $("#km_awal").val($c);
+        $("#harga_awal").val($d);
+        $("#harga_per_km").val($e);
+        $("#harga_per_kg").val($f);
     }
 </script>
 @endsection

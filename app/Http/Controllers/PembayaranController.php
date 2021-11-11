@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Exception\RequestException;
 use QurirQ\JenisPembayaran;
 use QurirQ\MstJual;
+use QurirQ\MstQsend;
 use Redirect;
 use Session;
 
@@ -45,6 +46,32 @@ class PembayaranController extends Controller
 			$data = MstJual::where('id', '=', $request->id_mst)->update([
 				'bukti_tf'	=> 'bukti_tf/'.$nama_gbr,
 				'sts_byr'	=> '1'
+			]);
+		}
+		
+		if ($data) {
+			return response()->json(['message' => 'Pembayaran Diterima'], 200);
+		} else {
+			return response()->json(['message' => 'Update pembayaran gagal'], 401);
+		}
+	}
+
+	public function updateStsByrQsend(Request $request)
+	{
+		$decode_image = base64_decode($request->bukti_tf);
+		$f = finfo_open();
+
+		$mime_type = finfo_buffer($f, $decode_image, FILEINFO_MIME_TYPE);
+		$extension = explode('/', $mime_type);
+
+		$nama_gbr = uniqid().".".$extension[1];
+
+		$p = \Storage::put('/public/bukti_tf/' . $nama_gbr, base64_decode($request->bukti_tf), 0755);
+		
+		if ($p) {
+			$data = MstQsend::where('id', '=', $request->id_mst)->update([
+				'bukti_tf'	=> 'bukti_tf/'.$nama_gbr,
+				'sts_bayar'	=> '1'
 			]);
 		}
 		

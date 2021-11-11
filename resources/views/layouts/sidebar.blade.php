@@ -162,6 +162,9 @@
                             <li class="nk-menu-item">
                                 <a href="{{url('ongkirSend')}}" class="nk-menu-link"><span class="nk-menu-text">Ongkir Q-Send</span></a>
                             </li>
+                            <li class="nk-menu-item">
+                                <a href="{{url('komisi')}}" class="nk-menu-link"><span class="nk-menu-text">Komisi</span></a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nk-menu-item has-sub">

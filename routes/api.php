@@ -31,6 +31,7 @@ Route::post('generateGrosirToken', 'Api\Auth\UserController@generateGrosirToken'
 Route::post('getOtp', 'Api\Auth\UserController@getOtp');
 Route::post('getBank', 'PembayaranController@getBank');
 Route::post('updateStsByr', 'PembayaranController@updateStsByr');
+Route::post('updateStsByrQsend', 'PembayaranController@updateStsByrQsend');
 
 Route::put('putStatusMstJual/{no_ent}', 'Api\PenjualanController@putStatusMstJual');
 
@@ -44,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('getStatus', 'Api\Auth\UserController@getStatus');
 	Route::post('updateStatus', 'Api\Auth\UserController@updateStatus');
 	Route::get('logoutDriver', 'Api\Auth\UserController@logoutDriver');
+	Route::post('updateLokasiDriver', 'Api\Auth\UserController@updateLokasiDriver');
 	//EndOfUser
 
 	//Outlet
@@ -56,7 +58,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('tambahCustomer', 'Api\CustomerController@tambahCustomer');	
 	Route::post('getCustomer', 'Api\CustomerController@getCustomer');	
 	Route::post('getKodeCust', 'Api\CustomerController@getKodeCust');
-	Route::post('getUser', 'Api\CustomerController@getUser');	
+	Route::post('getUser', 'Api\CustomerController@getUser');
+	Route::get('getDetailUserOutlet', 'Api\CustomerController@getDetailUserOutlet');
 	//endOfCustomer
 
 	//Kunjungan
@@ -82,16 +85,22 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('inputPenjualanGrosir', 'Api\PenjualanController@inputPenjualanGrosir');
 	Route::post('getDataTransaksi', 'Api\PenjualanController@getDataTransaksi');
 	Route::post('getTransaksiDriver', 'Api\PenjualanController@getTransaksiDriver');
+	Route::post('updateStatusTransaksiQsend', 'Api\PenjualanController@updateStatusTransaksiQsend');
+
 	Route::post('getTransaksiOutlet', 'Api\PenjualanController@getTransaksiOutlet');
-	// Route::post('getDataTransaksiSukses', 'Api\PenjualanController@getDataTransaksiSukses');
-	// Route::post('getDataTransaksiPending', 'Api\PenjualanController@getDataTransaksiPending');
-	// Route::post('getDataTransaksiBatal', 'Api\PenjualanController@getDataTransaksiBatal');
+	Route::get('getHistoryTransaksiOutlet', 'Api\PenjualanController@getHistoryTransaksiOutlet');
+	Route::get('getJumlahTransaksiOutlet', 'Api\PenjualanController@getJumlahTransaksiOutlet');
 	Route::post('getDetailTransaksi', 'Api\PenjualanController@getDetailTransaksi');
 	Route::post('updateStatusTransaksi', 'Api\PenjualanController@updateStatusTransaksi');
+	Route::post('updateStatusTransaksiDiterima', 'Api\PenjualanController@updateStatusTransaksiDiterima');
 	Route::post('batalkanTransaksi', 'Api\PenjualanController@batalkanTransaksi');
 
-	Route::post('inputQsend', 'Api\QsendController@inputQsend');
+	Route::post('cariQurir', 'Api\PenjualanController@cariQurir');
 
+	Route::post('inputQsend', 'Api\QsendController@inputQsend');
+	Route::post('hapusMstQsend', 'Api\QsendController@hapusMstQsend');
+	Route::post('getDataTransaksiQsend', 'Api\PenjualanController@getDataTransaksiQsend');
+	Route::post('getDetailQsend', 'Api\PenjualanController@getDetailQsend');
 	Route::post('getNoFaktur', 'Api\PenjualanController@getNoEntOrderJual');
 	Route::post('insertMasterOrderJual', 'Api\PenjualanController@insertMasterOrderJual');
 	Route::post('insertDetailOrderJual', 'Api\PenjualanController@insertDetailOrderJual');
@@ -154,6 +163,7 @@ Route::middleware('auth:api')->group(function () {
 
 	//Promo
 	Route::get('getPromo', 'Api\PromoController@getPromo');
+	Route::get('getKomisi', 'Api\PenjualanController@getKomisi');
 
 	//Penawaran
 	Route::get('getPenawaran', 'Api\PenawaranController@index');

@@ -177,10 +177,11 @@ class UserController extends Controller
 	{
 		$update = User::where('id', Auth::user()->id)->update([
 			'sts_online'	=> $request->sts_online
-		])->first();
+		]);
 
-		if ($status) {
-			return response()->json(['message' => $update->sts_online], 200);	
+		if ($update) {
+			$status = User::where('id', Auth::user()->id)->first();
+			return response()->json(['message' => $status->sts_online], 200);	
 		} else {
 			return response()->json(['message' => 'Gagal'], 401);
 		}
@@ -194,6 +195,20 @@ class UserController extends Controller
 
 		if ($update) {
 			return response()->json(['message' => "Logout Berhasil"], 200);	
+		} else {
+			return response()->json(['message' => 'Gagal'], 401);
+		}
+	}
+
+	public function updateLokasiDriver(Request $request)
+	{
+		$update = User::where('id', Auth::user()->id)->update([
+			'lat_driver'	=> $request->lat,
+			'lng_driver'	=> $request->lng
+		]);
+
+		if ($update) {
+			return response()->json(['message' => "Lokasi Berhasil Dirubah"], 200);	
 		} else {
 			return response()->json(['message' => 'Gagal'], 401);
 		}

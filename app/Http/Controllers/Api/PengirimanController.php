@@ -15,7 +15,11 @@ class PengirimanController extends Controller
 		$data = OngkirFood::where('sts_aktif', '=', '1')->get();
 		
 		if (count($data) > 0) {
-			$harga = $data[0]->harga_awal + (($request->jarak-4) * $data[0]->harga_per_km);
+			if ($request->jarak > $data[0]->km_awal) {
+				$harga = $data[0]->harga_awal + (($request->jarak-$data[0]->km_awal) * $data[0]->harga_per_km);
+			} else {
+				$harga = $data[0]->harga_awal;
+			}
 			return response()->json(['message' => $harga], 200);
 		} else {
 			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);

@@ -196,6 +196,11 @@ Route::get('/editOngkirSend/{id}', 'OngkirController@editOngkirSend');
 Route::post('/updateOngkirSend', 'OngkirController@updateOngkirSend');
 Route::get('/deleteOngkirSend/{id}', 'OngkirController@deleteOngkirSend');
 
+Route::get('/komisi', 'SettingController@index');
+Route::post('/tambahKomisi', 'SettingController@tambahKomisi');
+Route::post('/updateKomisi', 'SettingController@updateKomisi');
+Route::get('/deleteKomisi/{id}', 'SettingController@deleteKomisi');
+
 //pembayaran
 Route::post('/getStatusPembayaran', 'PembayaranController@get_transaction_status');
 

@@ -6,11 +6,20 @@ use Illuminate\Http\Request;
 use QurirQ\Http\Controllers\Controller;
 use QurirQ\MstQsend;
 use QurirQ\DetQsend;
+use QurirQ\Komisi;
 
 class QsendController extends Controller
 {
     public function inputQsend(Request $request)
     {
+        $komisi;
+        if  ($request->komisi == 0) {
+            $dt = Komisi::first();
+            $komisi = $request->total * ($dt->komisi_qurir/100);
+        } else {
+            $komisi = $request->komisi;
+        }
+
         $mst = MstQsend::insertGetId([
             'id_user'			        => $request->id_user,
             'pengirim'		            => $request->nama_pengirim,
@@ -22,6 +31,8 @@ class QsendController extends Controller
             'lng_pengirim'		        => $request->lng_pengirim,
             'total' 			        => $request->total,
             'jns_bayar'			        => $request->jns_bayar,
+            'sts_bayar'			        => $request->sts_bayar,
+            'komisi'			        => $komisi
         ]);
         
         $tmp_nama_penerima			    = explode(";", $request->nama_penerima);
@@ -55,6 +66,17 @@ class QsendController extends Controller
             return response()->json(['message' => $mst], 200);
         } else {
             return response()->json('Pengiriman gagal ditempatkan', 404);
+        }
+    }
+
+    public function hapusMstQsend(Request $request)
+    {
+        $delete = MstQsend::where('id', '=', $request->id)->delete();
+
+        if ($delete) {
+            return response()->json(['message' => "data berhasil dihapus"], 200);
+        } else {
+            return response()->json(['message' => "data gagal dihapus"], 200);
         }
     }
 }

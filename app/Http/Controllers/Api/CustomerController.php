@@ -72,6 +72,15 @@ class CustomerController extends Controller
 		}	
 	}
 
+	public function getDetailUserOutlet()
+	{
+		$data = User::join('outlet', 'outlet.id', '=', 'users.id_outlet')->where('users.id', '=', Auth::user()->id)->get();
 
+		if ($data) {
+			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+		} else {
+			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+		}	
+	}
 
 }
