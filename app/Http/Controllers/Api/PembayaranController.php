@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use QurirQ\Http\Controllers\Controller;
 use QurirQ\JenisPembayaran;
 use QurirQ\JurnalKeuangan;
+use Auth;
 
 class PembayaranController extends Controller
 {
