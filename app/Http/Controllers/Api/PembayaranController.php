@@ -23,7 +23,7 @@ class PembayaranController extends Controller
 
 	public function getPendapatanDriver()
 	{
-		$data = JurnalKeuangan::where('id_user', '=', Auth::user()->id)->where(\DB::raw('left(tgl_transaksi, 9)'), '=', date('Y-m-d'))->get();
+		$data = JurnalKeuangan::where('id_user', '=', Auth::user()->id)->where(\DB::raw('left(tgl_transaksi, 10)'), '=', date('Y-m-d'))->get();
 
 		if (count($data) > 0) {
 			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
