@@ -84,6 +84,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('inputPenjualan', 'Api\PenjualanController@inputPenjualan');
 	Route::post('inputPenjualanGrosir', 'Api\PenjualanController@inputPenjualanGrosir');
 	Route::post('getDataTransaksi', 'Api\PenjualanController@getDataTransaksi');
+	Route::get('getPendapatanDriver', 'Api\PembayaranController@getPendapatanDriver');
 	Route::post('getTransaksiDriver', 'Api\PenjualanController@getTransaksiDriver');
 	Route::post('updateStatusTransaksiQsend', 'Api\PenjualanController@updateStatusTransaksiQsend');
 	Route::post('updateStatusTransaksiQsendSelesai', 'Api\PenjualanController@updateStatusTransaksiQsendSelesai');

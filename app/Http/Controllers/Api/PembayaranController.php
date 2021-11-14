@@ -5,6 +5,7 @@ namespace QurirQ\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use QurirQ\Http\Controllers\Controller;
 use QurirQ\JenisPembayaran;
+use QurirQ\JurnalKeuangan;
 
 class PembayaranController extends Controller
 {
@@ -18,4 +19,15 @@ class PembayaranController extends Controller
 			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
 		}
     }
+
+	public function getPendapatanDriver()
+	{
+		$data = JurnalKeuangan::where('id_user', '=', Auth::user()->id)->where(\DB::raw('left(tgl_transaksi, 9)'), '=', date('Y-m-d'))->get();
+
+		if (count($data) > 0) {
+			return response()->json(['message' => 'Data Ditemukan', 'data' => $data], 200);
+		} else {
+			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
+		}
+	}
 }
