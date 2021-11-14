@@ -17,6 +17,7 @@ use QurirQ\DetOrderJual;
 use QurirQ\Voucher;
 use QurirQ\User;
 use QurirQ\Komisi;
+use QurirQ\JurnalKeuangan;
 use Illuminate\Support\Facades\Auth;
 use DB;
 
@@ -261,6 +262,32 @@ class PenjualanController extends Controller
 		
 		if ($det) {
 			$delete = Cart::where('id_user', '=', $request->id_user)->delete();
+			if($request->jns_bayar == "BAYAR DITEMPAT") {
+				$user = User::where('id_outlet', '=', $request->kd_outlet)->first();
+				$optionBuilder = new OptionsBuilder();
+				$optionBuilder->setTimeToLive(60*20);
+				
+				$notificationBuilder = new PayloadNotificationBuilder("Pesanan Baru");
+				$notificationBuilder->setBody("Pesanan Baru Diterima")
+				->setSound('default')
+				->setClickAction('act_home')
+				->setBadge(1);
+				
+				$dataBuilder = new PayloadDataBuilder();
+				$option = $optionBuilder->build();
+				$notification = $notificationBuilder->build();
+				$dt = $dataBuilder->build();
+				
+				$downstreamResponse = FCM::sendTo($user->firebase_token, $option, $notification, $dt);
+				$downstreamResponse->numberSuccess();
+				$downstreamResponse->numberFailure();
+				$downstreamResponse->numberModification();
+				$downstreamResponse->tokensToDelete();
+				$downstreamResponse->tokensToModify();
+				$downstreamResponse->tokensToRetry();
+				$downstreamResponse->tokensWithError();
+			}
+			
 			if ($delete) {
 				return response()->json(['message' => $mst], 200);
 			} else {
@@ -288,13 +315,13 @@ class PenjualanController extends Controller
 			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
 		}
 	}
-
+	
 	public function getDataTransaksiQsend(Request $request)
 	{
-		$data = MstQsend::select('mst_qsend.*', 'users.name as qurir_name')->leftjoin('det_qsend', 'det_qsend.id_mst', '=', 'mst_qsend.id')->leftjoin('users', 'users.id', '=', 'mst_qsend.id_qurir')
+		$data = MstQsend::select('mst_qsend.*', 'users.name as qurir_name', 'users.no_telp as no_telp_qurir')->leftjoin('det_qsend', 'det_qsend.id_mst', '=', 'mst_qsend.id')->leftjoin('users', 'users.id', '=', 'mst_qsend.id_qurir')
 		->where('mst_qsend.id_user', '=', $request->id)
-		->where('mst_qsend.sts_transaksi', '!=', 'SELESAI')
-		->where('mst_qsend.sts_transaksi', '!=', 'BATAL')
+		// ->where('mst_qsend.sts_transaksi', '!=', 'SELESAI')
+		// ->where('mst_qsend.sts_transaksi', '!=', 'BATAL')
 		->get();
 		
 		if (count($data) > 0) {
@@ -335,6 +362,57 @@ class PenjualanController extends Controller
 		
 		if ($data) {
 			return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
+		} else {
+			return response()->json(['message' => 'Data Gagal Dirubah'], 401);
+		}
+	}
+	
+	public function updateStatusTransaksiQsendSelesai(Request $request)
+	{
+		$data = MstQsend::where('id', '=', $request->id)->update([
+			"sts_transaksi" => $request->status
+		]);
+		
+		if ($data) {
+			$mst = MstQsend::where('id', '=', $request->id)->first();
+			$qurir = User::where('id', '=', $mst->id_qurir)->first();
+			if($mst->jns_bayar != 'BAYAR DITEMPAT'){
+				$update1 = User::where('id', '=', $mst->id_qurir)->update([
+					'saldo' 	=> $qurir->saldo + ($mst->total - $mst->komisi)
+				]);
+				
+				$insert1 = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_qurir,
+					'jns_transaksi'		=> 'Q-Send',
+					'saldo_awal'		=> $qurir->saldo,
+					'masuk'				=> $mst->total - $mst->komisi,
+					'saldo_akhir'		=> ($qurir->saldo + $mst->total - $mst->komisi)
+				]);
+				
+				if($update1 && $insert1) {
+					return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
+				} else {
+					return response()->json(['message' => 'Data Berhasil Dirubah, Saldo tidak terupdate'], 200);
+				}
+			} else {
+				$update1 = User::where('id', '=', $mst->id_qurir)->update([
+					'saldo' 	=> $qurir->saldo - $mst->komisi
+				]);
+				
+				$insert1 = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_qurir,
+					'jns_transaksi'		=> 'Q-Send',
+					'saldo_awal'		=> $qurir->saldo,
+					'keluar'			=> $mst->komisi,
+					'saldo_akhir'		=> ($qurir->saldo - $mst->komisi)
+				]);
+				
+				if($update1 && $insert1) {
+					return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
+				} else {
+					return response()->json(['message' => 'Data Berhasil Dirubah, Saldo tidak terupdate'], 200);
+				}
+			}
 		} else {
 			return response()->json(['message' => 'Data Gagal Dirubah'], 401);
 		}
@@ -437,7 +515,7 @@ class PenjualanController extends Controller
 			return response()->json(['message' => 'Data Tidak Ditemukan'], 401);
 		}
 	}
-
+	
 	public function getDetailQsend(Request $request)
 	{
 		$data = DetQsend::where('id_mst', '=', $request->id)->get();
@@ -475,6 +553,82 @@ class PenjualanController extends Controller
 		}
 	}
 	
+	public function updateStatusTransaksiSelesai(Request $request)
+	{
+		$data = MstJual::where('id', '=', $request->id)->update([
+			"sts_transaksi" => $request->status
+		]);
+		
+		if ($data) {
+			$mst = MstJual::where('id', '=', $request->id)->first();
+			$resto = User::where('id', '=', $mst->id_outlet)->first();
+			$qurir = User::where('id', '=', $mst->id_qurir)->first();
+			if($mst->jns_bayar != 'BAYAR DITEMPAT'){
+				$update = User::where('id', '=', $mst->id_outlet)->update([
+					'saldo' 	=> $mst->netto - $mst->komisi_outlet
+				]);
+				
+				$insert = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_outlet,
+					'jns_transaksi'		=> 'Q-Food',
+					'saldo_awal'		=> $resto->saldo,
+					'masuk'				=> $mst->netto - $mst->komisi_outlet,
+					'saldo_akhir'		=> ($resto->saldo + $mst->netto - $mst->komisi_outlet)
+				]);
+				
+				$update1 = User::where('id', '=', $mst->id_qurir)->update([
+					'saldo' 	=> $mst->ongkir - $mst->komisi_qurir
+				]);
+				
+				$insert1 = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_qurir,
+					'jns_transaksi'		=> 'Q-Food',
+					'saldo_awal'		=> $qurir->saldo,
+					'masuk'				=> $mst->ongkir - $mst->komisi_qurir,
+					'saldo_akhir'		=> ($qurir->saldo + $mst->ongkir - $mst->komisi_qurir)
+				]);
+				
+				if($update && $insert && $update1 && $insert1) {
+					return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
+				} else {
+					return response()->json(['message' => 'Data Berhasil Dirubah, Saldo tidak terupdate'], 200);
+				}
+			} else {
+				$update = User::where('id', '=', $mst->id_outlet)->update([
+					'saldo' 	=> $resto->saldo - $mst->komisi_outlet
+				]);
+				
+				$insert = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_outlet,
+					'jns_transaksi'		=> 'Q-Food',
+					'saldo_awal'		=> $resto->saldo,
+					'keluar'			=> $mst->komisi_outlet,
+					'saldo_akhir'		=> ($resto->saldo - $mst->komisi_outlet)
+				]);
+				
+				$update1 = User::where('id', '=', $mst->id_qurir)->update([
+					'saldo' 	=> $qurir->saldo - $mst->komisi_qurir
+				]);
+				
+				$insert1 = JurnalKeuangan::insert([
+					'id_user'			=> $mst->id_qurir,
+					'jns_transaksi'		=> 'Q-Food',
+					'saldo_awal'		=> $qurir->saldo,
+					'keluar'			=> $mst->komisi_qurir,
+					'saldo_akhir'		=> ($qurir->saldo - $mst->komisi_qurir)
+				]);
+				
+				if($update && $insert && $update1 && $insert1) {
+					return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
+				} else {
+					return response()->json(['message' => 'Data Berhasil Dirubah, Saldo tidak terupdate'], 200);
+				}
+			}
+		} else {
+			return response()->json(['message' => 'Data Gagal Dirubah'], 401);
+		}
+	}
+	
 	public function updateStatusTransaksiDiterima(Request $request)
 	{
 		$update = MstJual::where('id', '=', $request->id)->update([
@@ -484,7 +638,7 @@ class PenjualanController extends Controller
 		if ($update) {
 			// $data = User::where('otoritas', '=', 'DRIVER')->where('sts_online', '=', '1')->get();
 			$mst = MstJual::join('outlet', 'outlet.id', '=', 'mst_jual.id_outlet')->where('mst_jual.id', '=', $request->id)->first();
-
+			
 			$lat = $mst->lat;
 			$lng = $mst->long;
 			$data = DB::table("users")
@@ -683,7 +837,7 @@ class PenjualanController extends Controller
 		->groupBy("users.id", "users.firebase_token", "users.lat_driver", "users.lng_driver")
 		->orderBy('distance', 'asc')
 		->first();
-
+		
 		$update1 = MstQsend::where('id', '=', $request->id)->update([
 			"id_qurir" => $data->id
 		]);
@@ -714,14 +868,14 @@ class PenjualanController extends Controller
 		$downstreamResponse->tokensToModify();
 		$downstreamResponse->tokensToRetry();
 		$downstreamResponse->tokensWithError();
-
+		
 		if ($data != false) {
 			return response()->json(['message' => 'Data Berhasil Dirubah'], 200);
 		} else {
 			return response()->json(['message' => 'Data Gagal Dirubah'], 401);
 		}
 	}
-
+	
 	public function getKomisi()
 	{
 		$data = Komisi::all();

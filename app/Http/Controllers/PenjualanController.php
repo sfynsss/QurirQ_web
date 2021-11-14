@@ -69,6 +69,29 @@ class PenjualanController extends Controller
         ]);
         
         if ($data) {
+            $mst = MstJual::leftjoin('outlet', 'outlet.id', '=', 'mst_jual.id_outlet')->leftjoin('users', 'users.id_outlet', '=', 'outlet.id')->where('mst_jual.id', '=', $id)->first();
+            $optionBuilder = new OptionsBuilder();
+			$optionBuilder->setTimeToLive(60*20);
+			
+			$notificationBuilder = new PayloadNotificationBuilder("Pesanan Baru");
+			$notificationBuilder->setBody("Pesanan Baru Diterima")
+			->setSound('default')
+			->setClickAction('act_home')
+			->setBadge(1);
+			
+			$dataBuilder = new PayloadDataBuilder();
+			$option = $optionBuilder->build();
+			$notification = $notificationBuilder->build();
+			$dt = $dataBuilder->build();
+			
+			$downstreamResponse = FCM::sendTo($mst->firebase_token, $option, $notification, $dt);
+			$downstreamResponse->numberSuccess();
+			$downstreamResponse->numberFailure();
+			$downstreamResponse->numberModification();
+			$downstreamResponse->tokensToDelete();
+			$downstreamResponse->tokensToModify();
+			$downstreamResponse->tokensToRetry();
+			$downstreamResponse->tokensWithError();
             Session::flash('success', "Pembayaran Berhasil di Verifikasi !!!");
             return Redirect::back();
         } else {

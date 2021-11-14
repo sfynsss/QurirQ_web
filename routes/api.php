@@ -86,12 +86,14 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('getDataTransaksi', 'Api\PenjualanController@getDataTransaksi');
 	Route::post('getTransaksiDriver', 'Api\PenjualanController@getTransaksiDriver');
 	Route::post('updateStatusTransaksiQsend', 'Api\PenjualanController@updateStatusTransaksiQsend');
+	Route::post('updateStatusTransaksiQsendSelesai', 'Api\PenjualanController@updateStatusTransaksiQsendSelesai');
 
 	Route::post('getTransaksiOutlet', 'Api\PenjualanController@getTransaksiOutlet');
 	Route::get('getHistoryTransaksiOutlet', 'Api\PenjualanController@getHistoryTransaksiOutlet');
 	Route::get('getJumlahTransaksiOutlet', 'Api\PenjualanController@getJumlahTransaksiOutlet');
 	Route::post('getDetailTransaksi', 'Api\PenjualanController@getDetailTransaksi');
 	Route::post('updateStatusTransaksi', 'Api\PenjualanController@updateStatusTransaksi');
+	Route::post('updateStatusTransaksiSelesai', 'Api\PenjualanController@updateStatusTransaksiSelesai');
 	Route::post('updateStatusTransaksiDiterima', 'Api\PenjualanController@updateStatusTransaksiDiterima');
 	Route::post('batalkanTransaksi', 'Api\PenjualanController@batalkanTransaksi');
 
