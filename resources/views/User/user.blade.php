@@ -34,6 +34,8 @@
                     <th>No Telp</th>
                     @if ($status == 'resto')
                     <th>Nama Resto</th>
+                    @elseif ($status == 'driver')
+                    <th>Nopol Kendaraan</th>
                     @endif
                     <th>Aksi</th>
                 </tr>
@@ -48,6 +50,8 @@
                     <td>{{$data->no_telp}}</td>
                     @if ($status == 'resto')
                     <td>{{$data->outlet->nama_outlet}}</td>
+                    @elseif ($status == 'driver')
+                    <td>{{$data->nopol}}</td>
                     @endif
                     <td>
 {{--                         <button type="submit" class="btn btn-warning waves-effect text-left" onclick="setEdit('{{$data->kd_peg}}', '{{$data->name}}', '{{$data->email}}', '{{$data->tanggal_lahir}}', '{{$data->no_telp}}', '{{$data->alamat}}', '{{$data->cabang}}')" data-toggle="modal"  data-target=".bs-example-modal-lg">Edit</button> --}}

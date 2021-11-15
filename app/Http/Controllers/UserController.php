@@ -55,7 +55,8 @@ class UserController extends Controller
 				'api_token' => bin2hex(openssl_random_pseudo_bytes(30)),
 				'email_activation' => '1', 
 				'otoritas'	=> 'DRIVER',
-				'kd_peg'	=> $request->kd_peg
+				'kd_peg'	=> $request->kd_peg,
+				'nopol'		=> $request->nopol
 			]);	
 		} else if ($id == "resto") {
 			$insert = User::insert([
@@ -101,6 +102,14 @@ class UserController extends Controller
 					'id_outlet'	=> $request->id_outlet,
 					'password'	=> bcrypt($request->password)
 				]);	
+			} else if(isset($request->nopol)) {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'no_telp'	=> $request->no_telp,
+					'nopol'		=> $request->nopol,
+					'password'	=> bcrypt($request->password)
+				]);	
 			} else {
 				$update = User::where('id', '=', $request->id_user)->update([
 					'name'		=> $request->name,
@@ -115,6 +124,13 @@ class UserController extends Controller
 					'name'		=> $request->name,
 					'email'		=> $request->email,
 					'id_outlet'	=> $request->id_outlet,
+					'no_telp'	=> $request->no_telp
+				]);	
+			} else if(isset($request->nopol)) {
+				$update = User::where('id', '=', $request->id_user)->update([
+					'name'		=> $request->name,
+					'email'		=> $request->email,
+					'nopol'		=> $request->nopol,
 					'no_telp'	=> $request->no_telp
 				]);	
 			} else {

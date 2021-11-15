@@ -97,6 +97,19 @@
                                         </div>
                                         <!--/span-->
                                     </div>
+
+                                    @if ($status == "driver")
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="control-label text-left col-md-4">Nopol Kendaraan</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" name="nopol" id="nopol">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
