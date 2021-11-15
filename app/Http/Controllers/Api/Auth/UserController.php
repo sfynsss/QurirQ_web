@@ -214,4 +214,19 @@ class UserController extends Controller
 		}
 	}
 
+	public function ubahPassword(Request $request)
+	{
+		if($request->password != "") {
+			$update = User::where('id', Auth::user()->id)->update([
+				'password'	=> bcrypt($request->password)
+			]);
+		}
+
+		if ($update) {
+			return response()->json(['message' => "Lokasi Berhasil Dirubah"], 200);	
+		} else {
+			return response()->json(['message' => 'Gagal'], 401);
+		}
+	}
+
 }

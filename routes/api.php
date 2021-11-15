@@ -25,6 +25,7 @@ Route::post('aktifasiGrosir', 'Api\Auth\RegisterController@aktifasiGrosir');
 Route::post('uploadFoto', 'Api\Auth\RegisterController@uploadFoto');
 Route::post('generateGrosirToken', 'Api\Auth\RegisterController@generateGrosirToken');
 Route::post('forgetPassword', 'Api\Auth\UserController@forgetPassword');
+Route::post('ubahPassword', 'Api\Auth\UserController@ubahPassword');
 //resend kode aktifasi
 Route::post('resendAktifasi', 'Api\Auth\UserController@resendAktifasi');
 Route::post('generateGrosirToken', 'Api\Auth\UserController@generateGrosirToken');
