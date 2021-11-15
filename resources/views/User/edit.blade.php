@@ -50,7 +50,7 @@
 							</div>
 						</div>
 					</div>
-					@if (isset($user->nopol))
+					@if ($user->otoritas == 'DRIVER')
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label class="form-label" for="default-01">Nopol Kendaraan</label>
