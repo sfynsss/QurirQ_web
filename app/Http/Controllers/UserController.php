@@ -144,10 +144,10 @@ class UserController extends Controller
 		
 		if ($update) {
 			Session::flash('success', "Data Berhasil Diubah !!!");
-			return redirect('user/admin');
+			return Redirect::back();
 		} else {
 			Session::flash('error', "Data Gagal Diubah !!!");
-			return redirect('user/admin');
+			return Redirect::back();
 		}
 	}
 
