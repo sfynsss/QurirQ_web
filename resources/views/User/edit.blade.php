@@ -64,7 +64,7 @@
 						<div class="form-group">
 							<label class="form-label" for="default-01">Password</label>
 							<div class="form-control-wrap">
-								<input type="password" class="form-control" id="default-01" placeholder="Input placeholder" name="password" required>
+								<input type="password" class="form-control" id="default-01" placeholder="Input placeholder" name="password">
 							</div>
 						</div>
 					</div>
