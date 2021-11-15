@@ -223,7 +223,7 @@ class UserController extends Controller
 		}
 
 		if ($update) {
-			return response()->json(['message' => "Lokasi Berhasil Dirubah"], 200);	
+			return response()->json(['message' => "Password Berhasil Dirubah"], 200);	
 		} else {
 			return response()->json(['message' => 'Gagal'], 401);
 		}
