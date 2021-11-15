@@ -155,7 +155,7 @@
                 <div class="nk-footer" id="not-print">
                     <div class="container-fluid">
                         <div class="nk-footer-wrap">
-                            <div class="nk-footer-copyright"> 2020 Asa Mutiara Informa
+                            <div class="nk-footer-copyright"> 2021 QurirQ Alright Reserve
                             </div>
                             <div class="nk-footer-links">
                                 <ul class="nav nav-sm">
