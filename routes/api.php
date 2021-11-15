@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('getKodeCust', 'Api\CustomerController@getKodeCust');
 	Route::post('getUser', 'Api\CustomerController@getUser');
 	Route::get('getDetailUserOutlet', 'Api\CustomerController@getDetailUserOutlet');
+	Route::get('getDetailUserDriver', 'Api\CustomerController@getDetailUserDriver');
 	//endOfCustomer
 
 	//Kunjungan
