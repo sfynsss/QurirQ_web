@@ -25,7 +25,6 @@ Route::post('aktifasiGrosir', 'Api\Auth\RegisterController@aktifasiGrosir');
 Route::post('uploadFoto', 'Api\Auth\RegisterController@uploadFoto');
 Route::post('generateGrosirToken', 'Api\Auth\RegisterController@generateGrosirToken');
 Route::post('forgetPassword', 'Api\Auth\UserController@forgetPassword');
-Route::post('ubahPassword', 'Api\Auth\UserController@ubahPassword');
 //resend kode aktifasi
 Route::post('resendAktifasi', 'Api\Auth\UserController@resendAktifasi');
 Route::post('generateGrosirToken', 'Api\Auth\UserController@generateGrosirToken');
@@ -47,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('updateStatus', 'Api\Auth\UserController@updateStatus');
 	Route::get('logoutDriver', 'Api\Auth\UserController@logoutDriver');
 	Route::post('updateLokasiDriver', 'Api\Auth\UserController@updateLokasiDriver');
+	Route::post('ubahPassword', 'Api\Auth\UserController@ubahPassword');
 	//EndOfUser
 
 	//Outlet
